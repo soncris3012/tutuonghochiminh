@@ -156,10 +156,7 @@ export default function DocumentView({ onOpenImage }) {
 
                           <div className="md:col-span-2 space-y-2">
                             <div className="flex items-center gap-2">
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-900/60 text-amber-300 border border-red-700">
-                                Ảnh Tư Liệu Thật
-                              </span>
-                              <span className="text-xs text-stone-400">{point.image.date}</span>
+                              <span className="text-xs text-amber-400 font-medium">{point.image.date}</span>
                             </div>
                             <h4 className="text-sm font-bold text-amber-200">{point.image.title}</h4>
                             <p className="text-xs text-stone-300 leading-relaxed">{point.image.caption}</p>

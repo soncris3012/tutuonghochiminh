@@ -338,11 +338,6 @@ export default function SlideView({ onOpenImage }) {
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-end">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-red-800 text-amber-300 border border-red-600">
-                      Ảnh Thật Lịch Sử
-                    </span>
-                  </div>
                   <p className="text-xs font-bold text-amber-200">{currentSlide.imageCaption}</p>
                   <span className="text-[10px] text-stone-300 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1 font-medium">
                     <ImageIcon className="w-3 h-3 text-amber-400" />

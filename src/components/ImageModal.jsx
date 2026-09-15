@@ -39,12 +39,6 @@ export default function ImageModal({ image, onClose }) {
             {/* Image metadata */}
             <div className="p-6 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-red-900 text-amber-300 border border-red-700">
-                    Ảnh Tư Liệu Thật Lịch Sử
-                  </span>
-                </div>
-
                 <h3 className="text-xl font-bold text-amber-100 font-serif-title leading-snug">
                   {image.title}
                 </h3>
