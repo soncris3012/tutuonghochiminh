@@ -1,111 +1,185 @@
-import React, { useState, useEffect } from 'react';
-import { CREATIVE_POINTS, OVERVIEW_DATA, HISTORICAL_IMAGES } from '../data/content';
-import { ChevronLeft, ChevronRight, Maximize2, Quote, Sparkles, Star, Play, Pause, RotateCcw, Volume2, VolumeX, Eye } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { EXPANDED_SLIDE_CHAPTERS } from '../data/expandedSlides';
+import { 
+  ChevronLeft, ChevronRight, Maximize2, Minimize2, RotateCcw, Play, Pause, 
+  Layers, Image as ImageIcon, Star, Quote, Sparkles, CheckCircle2 
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SlideView({ onOpenImage }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // Flatten all slides into a single indexed list with chapter info
+  const allSlides = useMemo(() => {
+    const list = [];
+    EXPANDED_SLIDE_CHAPTERS.forEach((chap) => {
+      chap.slides.forEach((slide) => {
+        list.push({
+          ...slide,
+          chapterId: chap.chapterId,
+          chapterTitle: chap.title
+        });
+      });
+    });
+    return list;
+  }, []);
+
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [revealedBulletCount, setRevealedBulletCount] = useState(1); // Step-by-step reveal counter
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [autoPlay, setAutoPlay] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const [showChapterMenu, setShowChapterMenu] = useState(false);
 
-  // Total slides: 0 (Cover), 1 (Intro/Context), 2..7 (6 Creative Points), 8 (Summary/Conclusion)
-  const totalSlides = 9;
+  const currentSlide = allSlides[currentSlideIndex];
+  const totalSlides = allSlides.length;
 
+  // Reset revealed bullets when changing slides
+  useEffect(() => {
+    setRevealedBulletCount(1);
+  }, [currentSlideIndex]);
+
+  // Handle Fullscreen toggle
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => console.log(err));
+      setIsFullscreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
+
+  // Step-by-step forward action (Reveals next bullet, or moves to next slide if all bullets are visible)
+  const handleStepForward = () => {
+    if (currentSlide && revealedBulletCount < currentSlide.bullets.length) {
+      setRevealedBulletCount((prev) => prev + 1);
+    } else {
+      if (currentSlideIndex < totalSlides - 1) {
+        setDirection(1);
+        setCurrentSlideIndex((prev) => prev + 1);
+      }
+    }
+  };
+
+  // Backward action
+  const handleStepBackward = () => {
+    if (revealedBulletCount > 1) {
+      setRevealedBulletCount((prev) => prev - 1);
+    } else {
+      if (currentSlideIndex > 0) {
+        setDirection(-1);
+        setCurrentSlideIndex((prev) => prev - 1);
+      }
+    }
+  };
+
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight' || e.key === 'Space') {
-        setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
+        e.preventDefault();
+        handleStepForward();
       } else if (e.key === 'ArrowLeft') {
-        setCurrentSlide((prev) => Math.max(prev - 1, 0));
+        e.preventDefault();
+        handleStepBackward();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalSlides]);
+  }, [currentSlideIndex, revealedBulletCount, currentSlide, totalSlides]);
 
+  // Autoplay handler
   useEffect(() => {
     let interval;
     if (autoPlay) {
       interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % totalSlides);
-      }, 7000);
+        handleStepForward();
+      }, 4000);
     }
     return () => clearInterval(interval);
-  }, [autoPlay, totalSlides]);
+  }, [autoPlay, revealedBulletCount, currentSlideIndex]);
 
   const slideVariants = {
-    initial: (direction) => ({
-      x: direction > 0 ? 300 : -300,
+    initial: (dir) => ({
+      x: dir > 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.95
+      scale: 0.96
     }),
     animate: {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.4, ease: 'easeOut' }
+      transition: { duration: 0.35, ease: 'easeOut' }
     },
-    exit: (direction) => ({
-      x: direction < 0 ? 300 : -300,
+    exit: (dir) => ({
+      x: dir < 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.95,
-      transition: { duration: 0.3, ease: 'easeIn' }
+      scale: 0.96,
+      transition: { duration: 0.25, ease: 'easeIn' }
     })
   };
 
-  const [direction, setDirection] = useState(0);
-
-  const goToSlide = (index) => {
-    setDirection(index > currentSlide ? 1 : -1);
-    setCurrentSlide(index);
-  };
-
-  const nextSlide = () => {
-    if (currentSlide < totalSlides - 1) {
-      setDirection(1);
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
-
-  const prevSlide = () => {
-    if (currentSlide > 0) {
-      setDirection(-1);
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
-
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className={`max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 transition-all ${isFullscreen ? 'fixed inset-0 z-50 bg-[#0a090d] p-4 flex flex-col justify-between overflow-y-auto' : ''}`}>
       
-      {/* Slide Controls Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 p-4 rounded-2xl glass-panel border border-red-900/40">
+      {/* Top Controls Bar */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 p-3.5 rounded-2xl glass-panel border border-red-900/40">
         
-        {/* Slide Counter & Title */}
-        <div className="flex items-center gap-3">
-          <div className="px-3 py-1 rounded-lg bg-red-900/60 text-amber-300 text-xs font-bold border border-red-700">
-            Slide {currentSlide + 1} / {totalSlides}
-          </div>
-          <span className="text-xs text-stone-300 font-medium hidden sm:inline">
-            Sử dụng phím mũi tên <kbd className="px-1.5 py-0.5 bg-stone-800 rounded border border-stone-600 text-amber-400">←</kbd> <kbd className="px-1.5 py-0.5 bg-stone-800 rounded border border-stone-600 text-amber-400">→</kbd> trên bàn phím
+        {/* Chapter & Slide Index Selector */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => setShowChapterMenu(!showChapterMenu)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950 text-amber-300 text-xs font-bold border border-red-700 hover:bg-red-900 transition-all"
+          >
+            <Layers className="w-3.5 h-3.5 text-amber-400" />
+            <span>{currentSlide.chapterTitle}</span>
+          </button>
+
+          <span className="text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30">
+            Slide {currentSlideIndex + 1} / {totalSlides}
           </span>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls: Step Indicator, Autoplay, Fullscreen */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setAutoPlay(!autoPlay)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
               autoPlay
                 ? 'bg-amber-500 text-stone-950 font-bold shadow-md shadow-amber-500/30'
                 : 'bg-stone-900 text-stone-300 border border-stone-700 hover:text-white'
             }`}
           >
             {autoPlay ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-            <span>{autoPlay ? 'Đang Tự Động' : 'Tự Động Phát'}</span>
+            <span>{autoPlay ? 'Tự Động' : 'Tự Động Phát'}</span>
           </button>
 
           <button
-            onClick={() => goToSlide(0)}
-            className="p-1.5 rounded-lg bg-stone-900 text-stone-400 hover:text-amber-200 border border-stone-800"
+            onClick={toggleFullscreen}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-900 text-amber-300 hover:bg-red-900 border border-stone-700 text-xs font-bold transition-all"
+            title="Phóng to Fullscreen Trình Chiếu như PowerPoint"
+          >
+            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            <span className="hidden sm:inline">{isFullscreen ? 'Thoát Fullscreen' : 'Toàn Màn Hình'}</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setDirection(-1);
+              setCurrentSlideIndex(0);
+            }}
+            className="p-1.5 rounded-xl bg-stone-900 text-stone-400 hover:text-amber-200 border border-stone-800"
             title="Về slide đầu tiên"
           >
             <RotateCcw className="w-4 h-4" />
@@ -114,256 +188,196 @@ export default function SlideView({ onOpenImage }) {
 
       </div>
 
-      {/* Main Slide Deck Stage */}
-      <div className="relative min-h-[520px] rounded-3xl glass-panel border-2 border-red-900/50 p-6 sm:p-10 flex flex-col justify-between overflow-hidden shadow-2xl shadow-red-950/70">
+      {/* Dropdown Chapter Quick Selection Drawer */}
+      <AnimatePresence>
+        {showChapterMenu && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mb-4 p-4 rounded-2xl glass-panel border border-amber-500/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs"
+          >
+            {EXPANDED_SLIDE_CHAPTERS.map((chap) => (
+              <button
+                key={chap.chapterId}
+                onClick={() => {
+                  const targetIdx = allSlides.findIndex((s) => s.chapterId === chap.chapterId);
+                  if (targetIdx !== -1) {
+                    setDirection(targetIdx > currentSlideIndex ? 1 : -1);
+                    setCurrentSlideIndex(targetIdx);
+                    setShowChapterMenu(false);
+                  }
+                }}
+                className={`p-2.5 rounded-xl text-left border transition-all ${
+                  currentSlide.chapterId === chap.chapterId
+                    ? 'bg-red-900/80 border-amber-500 text-amber-200 font-bold'
+                    : 'bg-stone-900/60 border-stone-800 text-stone-300 hover:border-red-700'
+                }`}
+              >
+                <div className="text-[10px] text-amber-400 font-serif-title">Chương 0{chap.chapterId}</div>
+                <div className="line-clamp-1">{chap.title}</div>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Slide Presentation Stage */}
+      <div className="relative min-h-[550px] rounded-3xl glass-panel border-2 border-red-900/60 p-6 sm:p-10 flex flex-col justify-between shadow-2xl shadow-red-950/80 overflow-hidden">
         
-        {/* Background Decorative Gold Star */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-700/5 rounded-full blur-3xl pointer-events-none" />
-        <Star className="absolute top-6 right-6 w-16 h-16 text-red-900/20 pointer-events-none" />
+        {/* Ambient Decorative Stars */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-red-700/10 rounded-full blur-3xl pointer-events-none" />
+        <Star className="absolute top-4 right-4 w-12 h-12 text-red-900/20 pointer-events-none" />
 
         <AnimatePresence custom={direction} mode="wait">
-          
-          {/* SLIDE 0: COVER SLIDE */}
-          {currentSlide === 0 && (
-            <motion.div
-              key="slide-0"
-              custom={direction}
-              variants={slideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="flex-1 flex flex-col justify-center items-center text-center space-y-6 my-auto"
-            >
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-700 via-red-800 to-red-950 border-2 border-amber-400 flex items-center justify-center shadow-xl shadow-red-900/80">
-                <Star className="w-12 h-12 text-amber-400 fill-amber-400 star-animated" />
-              </div>
-
-              <div className="max-w-3xl">
-                <span className="px-3 py-1 rounded-full bg-red-950 text-amber-400 text-xs font-bold border border-red-700 uppercase tracking-widest block w-fit mx-auto mb-3">
-                  BÁO CÁO CHUYÊN ĐỀ LÝ LUẬN
+          <motion.div
+            key={`slide-${currentSlideIndex}`}
+            custom={direction}
+            variants={slideVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
+          >
+            
+            {/* Left Content Area (Title, Quote, Step-by-Step Bullets) */}
+            <div className="md:col-span-7 space-y-5">
+              
+              {/* Slide Header & Chapter Tag */}
+              <div>
+                <span className="px-3 py-1 rounded-full bg-red-950 text-amber-400 text-[11px] font-bold border border-red-700 uppercase tracking-widest inline-block mb-2">
+                  {currentSlide.chapterTitle}
                 </span>
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-amber-100 font-serif-title leading-tight mb-4">
-                  LÀM RÕ SỰ SÁNG TẠO TRONG TƯ TƯỞNG HỒ CHÍ MINH VỀ <span className="gold-gradient-text">ĐỘC LẬP DÂN TỘC</span>
-                </h1>
-                <p className="text-sm sm:text-base text-amber-200/80 leading-relaxed font-medium">
-                  Vận dụng & phát triển sáng tạo Chủ nghĩa Mác - Lênin vào hoàn cảnh Việt Nam
-                </p>
-              </div>
-
-              <button
-                onClick={nextSlide}
-                className="mt-4 px-6 py-3 rounded-xl bg-gradient-to-r from-red-700 to-red-900 text-amber-200 font-bold text-sm border border-amber-500/50 shadow-lg shadow-red-900/60 hover:scale-105 transition-all flex items-center gap-2"
-              >
-                <span>Bắt Đầu Trình Chiếu</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </motion.div>
-          )}
-
-          {/* SLIDE 1: INTRODUCTION & CONTEXT */}
-          {currentSlide === 1 && (
-            <motion.div
-              key="slide-1"
-              custom={direction}
-              variants={slideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-            >
-              <div className="space-y-4">
-                <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/30">
-                  Bối Cảnh Lịch Sử & Tính Cấp Thiết
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-amber-100 font-serif-title">
-                  Bước Ngoặt Tìm Đường Cứu Nước
+                <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                  {currentSlide.subtitle}
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
-                  Tư tưởng Hồ Chí Minh về độc lập dân tộc không phải là sự tiếp thu máy móc hay sao chép giáo điều, mà là kết quả của quá trình tư duy độc lập, tự chủ, bám sát thực tiễn cách mạng Việt Nam.
-                </p>
-                <div className="space-y-2">
-                  <div className="p-3 rounded-lg bg-stone-900/80 border-l-4 border-amber-500 text-xs text-amber-100">
-                    <strong>Thất bại tiền bối:</strong> Các phong trào Cần Vương, Việt Nam Quốc dân Đảng đều bế tắc về đường lối.
-                  </div>
-                  <div className="p-3 rounded-lg bg-stone-900/80 border-l-4 border-red-600 text-xs text-amber-100">
-                    <strong>Đóng góp lịch sử:</strong> Đã tìm thấy con đường cách mạng vô sản và vận dụng sáng tạo vào thuộc địa.
-                  </div>
-                </div>
               </div>
 
-              <div className="relative group overflow-hidden rounded-2xl border border-amber-500/30 shadow-xl cursor-pointer" onClick={() => onOpenImage(HISTORICAL_IMAGES.bacHoTuyenNgon)}>
-                <img
-                  src={HISTORICAL_IMAGES.bacHoTuyenNgon.url}
-                  alt={HISTORICAL_IMAGES.bacHoTuyenNgon.title}
-                  className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
-                  <p className="text-xs font-bold text-amber-200">{HISTORICAL_IMAGES.bacHoTuyenNgon.title}</p>
-                  <p className="text-[11px] text-stone-300">{HISTORICAL_IMAGES.bacHoTuyenNgon.date}</p>
+              {/* Quote Banner */}
+              {currentSlide.quote && (
+                <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-950/40 via-red-950/30 to-stone-900/40 border-l-4 border-amber-400 text-amber-100 text-xs italic font-serif-title shadow-sm">
+                  "{currentSlide.quote}"
                 </div>
-              </div>
-            </motion.div>
-          )}
+              )}
 
-          {/* SLIDES 2 TO 7: THE 6 CREATIVE POINTS */}
-          {currentSlide >= 2 && currentSlide <= 7 && (() => {
-            const pointIndex = currentSlide - 2;
-            const point = CREATIVE_POINTS[pointIndex];
+              {/* Bullet Points with Progressive Step-by-Step Reveal Animation */}
+              <div className="space-y-3 pt-2">
+                {currentSlide.bullets.map((bullet, idx) => {
+                  const isVisible = idx < revealedBulletCount;
 
-            return (
-              <motion.div
-                key={`slide-${currentSlide}`}
-                custom={direction}
-                variants={slideVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-700 to-red-950 border border-amber-400 flex items-center justify-center text-amber-300 font-bold text-sm">
-                      0{point.id}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                      {point.badge}
-                    </span>
-                  </div>
-
-                  <h2 className="text-xl sm:text-2xl font-bold text-amber-100 font-serif-title leading-snug">
-                    {point.title}
-                  </h2>
-
-                  {/* Quote highlight */}
-                  <div className="p-3.5 rounded-xl bg-amber-950/40 border-l-4 border-amber-400 text-amber-100 text-xs italic font-serif-title">
-                    "{point.quote}"
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
-                    {point.summary}
-                  </p>
-
-                  <div className="p-3 rounded-lg bg-stone-950/80 border border-red-900/40 text-xs space-y-1">
-                    <span className="text-amber-400 font-bold block">Sự sáng tạo đột phá:</span>
-                    <span className="text-stone-300">{point.historicalComparison.hoChiMinh}</span>
-                  </div>
-                </div>
-
-                {/* Historical Photo display */}
-                {point.image && (
-                  <div className="relative group overflow-hidden rounded-2xl border border-red-800/40 shadow-xl cursor-pointer" onClick={() => onOpenImage(point.image)}>
-                    <img
-                      src={point.image.url}
-                      alt={point.image.title}
-                      className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-end">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-red-900 text-amber-300">Ảnh Tư Liệu Thật</span>
-                        <span className="text-[11px] text-stone-300">{point.image.date}</span>
+                  return (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: isVisible ? 1 : 0.15, x: isVisible ? 0 : -10 }}
+                      transition={{ duration: 0.3 }}
+                      className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
+                        isVisible
+                          ? 'bg-stone-900/80 border-red-900/40 text-stone-100 shadow-md'
+                          : 'bg-stone-950/20 border-transparent text-stone-600'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5 ${
+                        isVisible ? 'bg-amber-500 text-stone-950' : 'bg-stone-800 text-stone-600'
+                      }`}>
+                        {idx + 1}
                       </div>
-                      <p className="text-xs font-bold text-amber-200">{point.image.title}</p>
-                      <p className="text-[11px] text-stone-300 line-clamp-2">{point.image.caption}</p>
-                    </div>
+                      <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                        {bullet}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Click instruction */}
+              <div className="text-[11px] text-amber-400/80 italic flex items-center gap-1 pt-1">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>
+                  {revealedBulletCount < currentSlide.bullets.length
+                    ? `Nhấn [Tiếp tục] hoặc phím [Mũi tên Phải] để hiện ý thứ ${revealedBulletCount + 1}`
+                    : "Đã hiện đủ ý. Nhấn [Tiếp tục] để sang Slide tiếp theo!"}
+                </span>
+              </div>
+
+            </div>
+
+            {/* Right Media Area (Real Archival Photography with Fix & Fallback) */}
+            <div className="md:col-span-5 flex flex-col justify-center">
+              <div
+                className="relative group overflow-hidden rounded-2xl border-2 border-red-900/50 shadow-2xl bg-black cursor-pointer aspect-[4/3]"
+                onClick={() => onOpenImage({
+                  url: currentSlide.image,
+                  title: currentSlide.subtitle,
+                  caption: currentSlide.imageCaption,
+                  date: "Tư liệu lịch sử",
+                  location: "Việt Nam"
+                })}
+              >
+                <img
+                  src={currentSlide.image}
+                  alt={currentSlide.subtitle}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    // Fallback to reliable Wikipedia backup if hotlink policy fails
+                    e.target.onerror = null;
+                    e.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Ho_Chi_Minh_1946.jpg/800px-Ho_Chi_Minh_1946.jpg";
+                  }}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-end">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-red-900 text-amber-300 border border-red-700">
+                      Ảnh Thật Lịch Sử
+                    </span>
                   </div>
-                )}
-              </motion.div>
-            );
-          })()}
-
-          {/* SLIDE 8: SUMMARY & CONCLUSION */}
-          {currentSlide === 8 && (
-            <motion.div
-              key="slide-8"
-              custom={direction}
-              variants={slideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="flex-1 flex flex-col justify-center space-y-6 my-auto text-center max-w-4xl mx-auto"
-            >
-              <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/30 w-fit mx-auto">
-                TỔNG KẾT VÀ GIÁ TRỊ LỊCH SỬ
-              </span>
-
-              <h2 className="text-2xl sm:text-4xl font-bold text-amber-100 font-serif-title">
-                Di Sản Tư Tưởng Trường Tồn Của Dân Tộc Việt Nam
-              </h2>
-
-              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed max-w-2xl mx-auto">
-                Sự sáng tạo giá trị Tư tưởng Hồ Chí Minh về độc lập dân tộc đã bổ sung vào kho tàng lý luận Mác - Lênin một hệ thống các luận điểm mới xuất sắc, mở ra con đường độc lập tự do cho Việt Nam và truyền cảm hứng mạnh mẽ cho phong trào giải phóng dân tộc trên toàn thế giới.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-                <div className="p-4 rounded-xl bg-stone-900/80 border border-amber-500/30">
-                  <span className="text-xs font-bold text-amber-300 block mb-1">1. Độc lập Tự chủ</span>
-                  <p className="text-[11px] text-stone-400">Không bao giờ giáo điều, luôn bám sát thực tiễn cách mạng đất nước.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-stone-900/80 border border-amber-500/30">
-                  <span className="text-xs font-bold text-amber-300 block mb-1">2. Vì Hạnh Phúc Nhân Dân</span>
-                  <p className="text-[11px] text-stone-400">Gắn chặt độc lập quốc gia với ấm no, tự do của từng người dân.</p>
-                </div>
-                <div className="p-4 rounded-xl bg-stone-900/80 border border-amber-500/30">
-                  <span className="text-xs font-bold text-amber-300 block mb-1">3. Tầm Vóc Thời Đại</span>
-                  <p className="text-[11px] text-stone-400">Nguồn cảm hứng vô tận cho các dân tộc bị áp bức đứng lên tự giải phóng.</p>
+                  <p className="text-xs font-bold text-amber-200">{currentSlide.imageCaption}</p>
+                  <span className="text-[10px] text-stone-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1">
+                    <ImageIcon className="w-3 h-3 text-amber-400" />
+                    <span>Bấm để phóng to hình ảnh</span>
+                  </span>
                 </div>
               </div>
+            </div>
 
-              <div className="pt-2">
-                <button
-                  onClick={() => goToSlide(0)}
-                  className="px-5 py-2.5 rounded-xl bg-red-900 text-amber-200 text-xs font-bold border border-amber-500/40 hover:bg-red-800 transition-all inline-flex items-center gap-2"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>Xem Lại Từ Đầu</span>
-                </button>
-              </div>
-            </motion.div>
-          )}
-
+          </motion.div>
         </AnimatePresence>
 
-        {/* Slide Controls Navigation Bottom Bar */}
-        <div className="flex items-center justify-between pt-6 border-t border-red-900/30 mt-6 z-10">
+        {/* Bottom Slide Controls Bar */}
+        <div className="flex items-center justify-between pt-4 border-t border-red-900/40 mt-6 z-10">
           <button
-            onClick={prevSlide}
-            disabled={currentSlide === 0}
+            onClick={handleStepBackward}
+            disabled={currentSlideIndex === 0 && revealedBulletCount === 1}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              currentSlide === 0
+              currentSlideIndex === 0 && revealedBulletCount === 1
                 ? 'opacity-40 cursor-not-allowed text-stone-600 bg-stone-900'
-                : 'bg-stone-900 text-amber-200 border border-stone-700 hover:bg-red-900 hover:border-amber-400'
+                : 'bg-stone-900 text-amber-200 border border-stone-700 hover:bg-red-900'
             }`}
           >
             <ChevronLeft className="w-4 h-4" />
-            <span>Slide Trước</span>
+            <span>Lùi lại</span>
           </button>
 
-          {/* Slide Indicator Dots */}
+          {/* Progress dots for current slide bullets */}
           <div className="flex items-center gap-1.5">
-            {Array.from({ length: totalSlides }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  index === currentSlide
-                    ? 'w-7 bg-amber-400 shadow-md shadow-amber-400/50'
-                    : 'bg-stone-800 hover:bg-red-800'
+            {currentSlide.bullets.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx < revealedBulletCount
+                    ? 'w-6 bg-amber-400 shadow-md shadow-amber-400/50'
+                    : 'bg-stone-800'
                 }`}
-                title={`Chuyển tới Slide ${index + 1}`}
               />
             ))}
           </div>
 
           <button
-            onClick={nextSlide}
-            disabled={currentSlide === totalSlides - 1}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              currentSlide === totalSlides - 1
-                ? 'opacity-40 cursor-not-allowed text-stone-600 bg-stone-900'
-                : 'bg-gradient-to-r from-red-800 to-red-900 text-amber-200 border border-amber-500/50 hover:from-red-700 hover:to-red-800 shadow-md shadow-red-900/50'
-            }`}
+            onClick={handleStepForward}
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-red-700 to-red-900 text-amber-200 border border-amber-500/50 hover:from-red-600 hover:to-red-800 shadow-lg shadow-red-900/60 transition-all"
           >
-            <span>Slide Tiếp</span>
+            <span>{revealedBulletCount < currentSlide.bullets.length ? 'Hiện ý tiếp theo' : 'Slide Tiếp theo'}</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
