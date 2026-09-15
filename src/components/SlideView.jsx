@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { EXPANDED_SLIDE_CHAPTERS, CHAPTER_THEMES } from '../data/expandedSlides';
 import { 
   ChevronLeft, ChevronRight, Maximize2, Minimize2, RotateCcw, Play, Pause, 
-  Layers, Image as ImageIcon, Star, Sparkles 
+  Layers, Star, Sparkles 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -123,11 +123,12 @@ export default function SlideView({ onOpenImage }) {
     return () => clearInterval(interval);
   }, [autoPlay, revealedBulletCount, currentSlideIndex]);
 
+  // Slide-level page transitions
   const slideVariants = {
     initial: (dir) => ({
       x: dir > 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.97
+      scale: 0.98
     }),
     animate: {
       x: 0,
@@ -138,20 +139,116 @@ export default function SlideView({ onOpenImage }) {
     exit: (dir) => ({
       x: dir < 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.97,
+      scale: 0.98,
       transition: { duration: 0.25, ease: 'easeIn' }
     })
   };
 
+  // Dynamic animation variant generator for bullets
+  const getBulletAnimation = (animType, isVisible) => {
+    switch (animType) {
+      case 'slide-right':
+        return {
+          initial: { opacity: 0, x: 30 },
+          animate: { opacity: isVisible ? 1 : 0.15, x: isVisible ? 0 : 15 },
+          transition: { duration: 0.28 }
+        };
+      case 'scale-pop':
+        return {
+          initial: { opacity: 0, scale: 0.88 },
+          animate: { opacity: isVisible ? 1 : 0.15, scale: isVisible ? 1 : 0.94 },
+          transition: { duration: 0.28 }
+        };
+      case 'flip-3d':
+        return {
+          initial: { opacity: 0, rotateX: 25 },
+          animate: { opacity: isVisible ? 1 : 0.15, rotateX: isVisible ? 0 : 15 },
+          transition: { duration: 0.3 }
+        };
+      case 'diagonal-in':
+        return {
+          initial: { opacity: 0, x: -20, y: 20 },
+          animate: { opacity: isVisible ? 1 : 0.15, x: isVisible ? 0 : -10, y: isVisible ? 0 : 10 },
+          transition: { duration: 0.28 }
+        };
+      case 'slide-up':
+      default:
+        return {
+          initial: { opacity: 0, y: 25 },
+          animate: { opacity: isVisible ? 1 : 0.15, y: isVisible ? 0 : 12 },
+          transition: { duration: 0.25 }
+        };
+    }
+  };
+
+  // Render Image Box with 100% natural aspect ratio (object-contain, no cropping)
+  const renderImageBox = (imgSrc, altText, className = "h-56") => (
+    <div
+      className={`relative group rounded-2xl border-2 border-amber-500/40 bg-black/60 shadow-xl overflow-hidden cursor-pointer flex items-center justify-center p-1.5 transition-all hover:border-amber-400 ${className}`}
+      onClick={() => onOpenImage({
+        url: resolveImgSrc(imgSrc),
+        title: currentSlide.subtitle,
+        caption: altText,
+        date: "Tư liệu lịch sử",
+        location: "Việt Nam"
+      })}
+    >
+      <img
+        src={resolveImgSrc(imgSrc)}
+        alt={altText}
+        loading="eager"
+        className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-[1.02]"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = resolveImgSrc('images/bac_ho_portrait_color.jpg');
+        }}
+      />
+    </div>
+  );
+
+  // Render Bullet Points list with dynamic animation
+  const renderBullets = (bullets, startIndex = 0) => (
+    <div className="space-y-2.5">
+      {bullets.map((bullet, localIdx) => {
+        const globalIdx = startIndex + localIdx;
+        const isVisible = globalIdx < revealedBulletCount;
+        const anim = getBulletAnimation(currentSlide.animType, isVisible);
+
+        return (
+          <motion.div
+            key={globalIdx}
+            initial={anim.initial}
+            animate={anim.animate}
+            transition={anim.transition}
+            className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all ${
+              isVisible
+                ? 'bg-black/55 border-amber-500/35 text-stone-100 shadow-md backdrop-blur-sm'
+                : 'bg-black/10 border-transparent text-stone-600'
+            }`}
+          >
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5 ${
+              isVisible ? 'bg-amber-400 text-stone-950 shadow-sm' : 'bg-stone-800 text-stone-600'
+            }`}>
+              {globalIdx + 1}
+            </div>
+            <p className="text-xs sm:text-sm font-medium leading-relaxed">
+              {bullet}
+            </p>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className={`transition-all ${
       isFullscreen 
-        ? 'fixed inset-0 z-50 bg-[#070204] p-4 sm:p-6 flex flex-col justify-between w-full h-full overflow-hidden' 
+        ? 'fixed inset-0 z-50 bg-[#070204] p-3 sm:p-6 flex flex-col justify-between w-full h-full overflow-hidden' 
         : 'max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4'
     }`}>
       
       {/* Top Controls Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 p-3 rounded-2xl glass-panel border border-red-900/40 w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-3 p-3 rounded-2xl glass-panel border border-red-900/40 w-full">
         
         {/* Chapter & Slide Index Selector */}
         <div className="flex items-center gap-3 flex-wrap">
@@ -212,7 +309,7 @@ export default function SlideView({ onOpenImage }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mb-4 p-4 rounded-2xl glass-panel border border-amber-500/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs w-full"
+            className="mb-3 p-4 rounded-2xl glass-panel border border-amber-500/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs w-full"
           >
             {EXPANDED_SLIDE_CHAPTERS.map((chap) => (
               <button
@@ -241,7 +338,7 @@ export default function SlideView({ onOpenImage }) {
 
       {/* Main Slide Presentation Stage - Dynamic Background & Fullscreen Adaptability */}
       <div 
-        className={`relative rounded-3xl p-6 sm:p-10 flex flex-col justify-between shadow-2xl overflow-hidden border-2 transition-all duration-700 bg-gradient-to-br ${currentTheme.bgGradient} ${currentTheme.accentBorder} ${
+        className={`relative rounded-3xl p-5 sm:p-9 flex flex-col justify-between shadow-2xl overflow-hidden border-2 transition-all duration-700 bg-gradient-to-br ${currentTheme.bgGradient} ${currentTheme.accentBorder} ${
           isFullscreen ? 'flex-1 h-full w-full' : 'min-h-[580px]'
         }`}
         style={{
@@ -264,133 +361,239 @@ export default function SlideView({ onOpenImage }) {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+            className="flex-1 flex flex-col justify-center my-auto"
           >
             
-            {/* Left Content Area (Title, Quote, Step-by-Step Bullets) */}
-            <div className="lg:col-span-7 space-y-4">
-              
-              {/* Slide Header & Chapter Badge with dynamic chapter color */}
-              <div>
-                <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-2 shadow-sm ${currentTheme.badgeBg}`}>
-                  {currentSlide.chapterTitle}
-                </span>
-                <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
-                  {currentSlide.subtitle}
-                </h2>
-              </div>
-
-              {/* Quote Banner */}
-              {currentSlide.quote && (
-                <div className="p-3.5 rounded-xl bg-black/40 border-l-4 border-amber-400 text-amber-100 text-xs sm:text-sm italic font-serif-title shadow-sm">
-                  "{currentSlide.quote}"
+            {/* ============================================================ */}
+            {/* LAYOUT 1: LEFT TEXT - RIGHT DUAL IMAGES                      */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'left-text-right-img' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-7 space-y-4">
+                  <div>
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-2 shadow-sm ${currentTheme.badgeBg}`}>
+                      {currentSlide.chapterTitle}
+                    </span>
+                    <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                      {currentSlide.subtitle}
+                    </h2>
+                  </div>
+                  {currentSlide.quote && (
+                    <div className="p-3.5 rounded-xl bg-black/40 border-l-4 border-amber-400 text-amber-100 text-xs sm:text-sm italic font-serif-title shadow-sm">
+                      "{currentSlide.quote}"
+                    </div>
+                  )}
+                  {renderBullets(currentSlide.bullets)}
                 </div>
-              )}
 
-              {/* Bullet Points with Progressive Step-by-Step Reveal Animation */}
-              <div className="space-y-3 pt-1">
-                {currentSlide.bullets.map((bullet, idx) => {
-                  const isVisible = idx < revealedBulletCount;
+                <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                  {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "h-48 sm:h-56")}
+                  {renderImageBox(currentSlide.secondaryImage, currentSlide.subtitle, "h-36 sm:h-44")}
+                </div>
+              </div>
+            )}
 
-                  return (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: isVisible ? 1 : 0.15, x: isVisible ? 0 : -8 }}
-                      transition={{ duration: 0.25 }}
-                      className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all ${
-                        isVisible
-                          ? 'bg-black/55 border-amber-500/35 text-stone-100 shadow-md backdrop-blur-sm'
-                          : 'bg-black/10 border-transparent text-stone-600'
-                      }`}
-                    >
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5 ${
-                        isVisible ? 'bg-amber-400 text-stone-950 shadow-sm' : 'bg-stone-800 text-stone-600'
-                      }`}>
-                        {idx + 1}
-                      </div>
-                      <p className="text-xs sm:text-sm font-medium leading-relaxed">
-                        {bullet}
+            {/* ============================================================ */}
+            {/* LAYOUT 2: LEFT DUAL IMAGES - RIGHT TEXT                      */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'left-img-right-text' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-5 order-2 lg:order-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                  {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "h-48 sm:h-56")}
+                  {renderImageBox(currentSlide.secondaryImage, currentSlide.subtitle, "h-36 sm:h-44")}
+                </div>
+
+                <div className="lg:col-span-7 order-1 lg:order-2 space-y-4">
+                  <div>
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-2 shadow-sm ${currentTheme.badgeBg}`}>
+                      {currentSlide.chapterTitle}
+                    </span>
+                    <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                      {currentSlide.subtitle}
+                    </h2>
+                  </div>
+                  {currentSlide.quote && (
+                    <div className="p-3.5 rounded-xl bg-black/40 border-l-4 border-amber-400 text-amber-100 text-xs sm:text-sm italic font-serif-title shadow-sm">
+                      "{currentSlide.quote}"
+                    </div>
+                  )}
+                  {renderBullets(currentSlide.bullets)}
+                </div>
+              </div>
+            )}
+
+            {/* ============================================================ */}
+            {/* LAYOUT 3: BENTO GRID                                         */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'bento-grid' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                {/* Large Portrait Box on Left */}
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-3">
+                  {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "flex-1 min-h-[220px]")}
+                  {renderImageBox(currentSlide.secondaryImage, currentSlide.subtitle, "h-36")}
+                </div>
+
+                {/* Right Bento Cards */}
+                <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
+                  <div>
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-2 shadow-sm ${currentTheme.badgeBg}`}>
+                      {currentSlide.chapterTitle}
+                    </span>
+                    <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                      {currentSlide.subtitle}
+                    </h2>
+                  </div>
+
+                  {currentSlide.quote && (
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-950/60 to-black/60 border border-amber-500/40 text-amber-100 text-xs sm:text-sm italic font-serif-title shadow-md">
+                      "{currentSlide.quote}"
+                    </div>
+                  )}
+
+                  {renderBullets(currentSlide.bullets)}
+                </div>
+              </div>
+            )}
+
+            {/* ============================================================ */}
+            {/* LAYOUT 4: TOP BANNER - BOTTOM SPLIT COLUMNS                  */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'top-banner-bottom-split' && (
+              <div className="space-y-4">
+                {/* Top Wide Banner */}
+                <div className="p-4 rounded-2xl bg-black/45 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-widest inline-block mb-1 ${currentTheme.badgeBg}`}>
+                      {currentSlide.chapterTitle}
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-amber-100 font-serif-title">
+                      {currentSlide.subtitle}
+                    </h2>
+                  </div>
+                  {currentSlide.quote && (
+                    <div className="max-w-md text-right text-xs italic text-amber-300 font-serif-title border-l-2 sm:border-l-0 sm:border-r-2 border-amber-400 pr-2 pl-2 sm:pl-0">
+                      "{currentSlide.quote}"
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom 2 Columns */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                  <div className="lg:col-span-7">
+                    {renderBullets(currentSlide.bullets)}
+                  </div>
+                  <div className="lg:col-span-5 grid grid-cols-2 gap-3">
+                    {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "h-56")}
+                    {renderImageBox(currentSlide.secondaryImage, currentSlide.subtitle, "h-56")}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ============================================================ */}
+            {/* LAYOUT 5: SPOTLIGHT CENTER                                   */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'spotlight-center' && (
+              <div className="space-y-4">
+                <div className="text-center max-w-2xl mx-auto">
+                  <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-1.5 ${currentTheme.badgeBg}`}>
+                    {currentSlide.chapterTitle}
+                  </span>
+                  <h2 className="text-xl sm:text-3xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                    {currentSlide.subtitle}
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                  {/* Left 2 bullets */}
+                  <div className="lg:col-span-4">
+                    {renderBullets(currentSlide.bullets.slice(0, 2), 0)}
+                  </div>
+
+                  {/* Center Prominent Photo */}
+                  <div className="lg:col-span-4">
+                    {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "h-64 sm:h-72")}
+                  </div>
+
+                  {/* Right remaining bullets */}
+                  <div className="lg:col-span-4">
+                    {renderBullets(currentSlide.bullets.slice(2), 2)}
+                  </div>
+                </div>
+
+                {currentSlide.quote && (
+                  <div className="text-center p-2.5 rounded-xl bg-black/35 border border-amber-500/20 text-xs italic text-amber-200 font-serif-title max-w-2xl mx-auto">
+                    "{currentSlide.quote}"
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ============================================================ */}
+            {/* LAYOUT 6: GRID CARDS DUAL                                    */}
+            {/* ============================================================ */}
+            {currentSlide.layoutType === 'grid-cards-dual' && (
+              <div className="space-y-4">
+                {/* Header & 2 Photos Header Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                  <div className="lg:col-span-6 space-y-2">
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-widest inline-block mb-1 ${currentTheme.badgeBg}`}>
+                      {currentSlide.chapterTitle}
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-amber-100 font-serif-title leading-snug">
+                      {currentSlide.subtitle}
+                    </h2>
+                    {currentSlide.quote && (
+                      <p className="text-xs italic text-amber-300 font-serif-title pl-2 border-l-2 border-amber-400">
+                        "{currentSlide.quote}"
                       </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    )}
+                  </div>
 
-            </div>
+                  <div className="lg:col-span-6 grid grid-cols-2 gap-3">
+                    {renderImageBox(currentSlide.primaryImage, currentSlide.subtitle, "h-40")}
+                    {renderImageBox(currentSlide.secondaryImage, currentSlide.subtitle, "h-40")}
+                  </div>
+                </div>
 
-            {/* Right Media Area: DUAL-IMAGE VIVID COLOR PHOTO GALLERY (Zero Empty Black Void!) */}
-            <div className="lg:col-span-5 flex flex-col gap-3 justify-center h-full">
-              
-              {/* Primary Image: Color Portrait of Uncle Ho */}
-              <div
-                className="relative group overflow-hidden rounded-2xl border-2 border-amber-500/40 shadow-xl bg-black/80 cursor-pointer h-52 sm:h-60"
-                onClick={() => onOpenImage({
-                  url: resolveImgSrc(currentSlide.primaryImage),
-                  title: currentSlide.subtitle,
-                  caption: currentSlide.primaryCaption,
-                  date: "Tư liệu lịch sử màu",
-                  location: "Việt Nam"
-                })}
-              >
-                <img
-                  src={resolveImgSrc(currentSlide.primaryImage)}
-                  alt={currentSlide.primaryCaption}
-                  loading="eager"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = resolveImgSrc('images/bac_ho_portrait_color.jpg');
-                  }}
-                />
+                {/* 4 Cards Grid Bottom */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  {currentSlide.bullets.map((bullet, idx) => {
+                    const isVisible = idx < revealedBulletCount;
+                    const anim = getBulletAnimation(currentSlide.animType, isVisible);
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3.5 flex flex-col justify-end">
-                  <p className="text-xs font-bold text-amber-200">{currentSlide.primaryCaption}</p>
-                  <span className="text-[10px] text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1 font-medium">
-                    <ImageIcon className="w-3 h-3" />
-                    <span>Bấm để phóng to</span>
-                  </span>
+                    return (
+                      <motion.div
+                        key={idx}
+                        initial={anim.initial}
+                        animate={anim.animate}
+                        transition={anim.transition}
+                        className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all ${
+                          isVisible
+                            ? 'bg-black/55 border-amber-500/35 text-stone-100 shadow-md backdrop-blur-sm'
+                            : 'bg-black/10 border-transparent text-stone-600'
+                        }`}
+                      >
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5 ${
+                          isVisible ? 'bg-amber-400 text-stone-950 shadow-sm' : 'bg-stone-800 text-stone-600'
+                        }`}>
+                          {idx + 1}
+                        </div>
+                        <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                          {bullet}
+                        </p>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
-
-              {/* Secondary Image: Historical Event / Army / Flag */}
-              <div
-                className="relative group overflow-hidden rounded-2xl border border-amber-500/30 shadow-lg bg-black/70 cursor-pointer h-36 sm:h-44"
-                onClick={() => onOpenImage({
-                  url: resolveImgSrc(currentSlide.secondaryImage),
-                  title: currentSlide.subtitle,
-                  caption: currentSlide.secondaryCaption,
-                  date: "Tư liệu sự kiện lịch sử",
-                  location: "Việt Nam"
-                })}
-              >
-                <img
-                  src={resolveImgSrc(currentSlide.secondaryImage)}
-                  alt={currentSlide.secondaryCaption}
-                  loading="eager"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = resolveImgSrc('images/co_do_sao_vang.svg');
-                  }}
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent p-3 flex flex-col justify-end">
-                  <p className="text-[11px] font-semibold text-stone-200">{currentSlide.secondaryCaption}</p>
-                  <span className="text-[9px] text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-0.5">
-                    <ImageIcon className="w-2.5 h-2.5" />
-                    <span>Bấm để xem ảnh</span>
-                  </span>
-                </div>
-              </div>
-
-            </div>
+            )}
 
           </motion.div>
         </AnimatePresence>
 
         {/* Bottom Slide Controls Bar */}
-        <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-6 z-10 w-full">
+        <div className="flex items-center justify-between pt-3 border-t border-white/10 mt-5 z-10 w-full">
           <button
             onClick={handleStepBackward}
             disabled={currentSlideIndex === 0 && revealedBulletCount === 1}
