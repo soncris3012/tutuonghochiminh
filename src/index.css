@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0f0e13;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #991b1b;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #dc2626;
+  }
+}
+
+/* Custom revolutionary glows & glassmorphism */
+.glass-panel {
+  background: rgba(26, 15, 20, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-gold {
+  background: rgba(45, 26, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFE066 0%, #F59E0B 50%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.red-gradient-bg {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #450a0a 100%);
+}
+
+.font-serif-title {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Animations */
+@keyframes starPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.8)); }
+}
+
+.star-animated {
+  animation: starPulse 3s infinite ease-in-out;
+}
