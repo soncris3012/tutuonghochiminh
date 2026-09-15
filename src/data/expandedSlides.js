@@ -1,86 +1,106 @@
-// Bộ Dữ Liệu Slide Trình Chiếu Mở Rộng: 8 Chương (~42 Slide Chi Tiết)
-// Hỗ trợ ĐA DẠNG LAYOUT (6 kiểu bố cục khác nhau) và ĐA DẠNG HIỆU ỨNG CHỮ
-// 100% Ảnh tỷ lệ nguyên bản (object-contain), KHÔNG CẮT XÉN ẢNH, KHÔNG TEXT DƯ THỪA
+// Bộ Dữ Liệu Slide Trình Chiếu: 8 Chương (~42 Slide Chi Tiết)
+// 28+ ẢNH KHÁC BIỆT HOÀN TOÀN GIỮA CÁC SLIDE (KHÔNG TRÙNG LẶP)
+// Bỏ toàn bộ viền vàng, ảnh hòa quyện cùng màu nền nhung đỏ thẫm
 
 export const CHAPTER_THEMES = {
   1: {
-    bgGradient: "from-[#2e080f] via-[#1a0409] to-[#0c0204]",
-    glowColor: "rgba(220, 38, 38, 0.25)",
-    accentBorder: "border-red-600/60",
-    badgeBg: "bg-red-950/90 text-amber-300 border-red-500/70"
+    bgGradient: "from-[#28070d] via-[#170307] to-[#0a0103]",
+    glowColor: "rgba(220, 38, 38, 0.28)",
+    badgeBg: "bg-red-950/80 text-amber-300 border-red-800/60"
   },
   2: {
-    bgGradient: "from-[#390d16] via-[#23060d] to-[#100205]",
-    glowColor: "rgba(234, 179, 8, 0.22)",
-    accentBorder: "border-amber-500/60",
-    badgeBg: "bg-amber-950/90 text-amber-200 border-amber-400/70"
+    bgGradient: "from-[#350b13] via-[#1f050b] to-[#0e0204]",
+    glowColor: "rgba(234, 179, 8, 0.24)",
+    badgeBg: "bg-amber-950/80 text-amber-200 border-amber-700/60"
   },
   3: {
-    bgGradient: "from-[#341108] via-[#200904] to-[#0e0402]",
-    glowColor: "rgba(245, 158, 11, 0.25)",
-    accentBorder: "border-orange-600/60",
-    badgeBg: "bg-orange-950/90 text-amber-300 border-orange-500/70"
+    bgGradient: "from-[#2e0f07] via-[#1b0803] to-[#0c0301]",
+    glowColor: "rgba(245, 158, 11, 0.26)",
+    badgeBg: "bg-orange-950/80 text-amber-300 border-orange-800/60"
   },
   4: {
-    bgGradient: "from-[#2f0616] via-[#1c030d] to-[#0d0106]",
-    glowColor: "rgba(225, 29, 72, 0.24)",
-    accentBorder: "border-rose-700/60",
-    badgeBg: "bg-rose-950/90 text-rose-200 border-rose-500/70"
+    bgGradient: "from-[#2b0515] via-[#1a020c] to-[#0b0105]",
+    glowColor: "rgba(225, 29, 72, 0.26)",
+    badgeBg: "bg-rose-950/80 text-rose-200 border-rose-800/60"
   },
   5: {
-    bgGradient: "from-[#3c060e] via-[#240307] to-[#120103]",
-    glowColor: "rgba(239, 68, 68, 0.26)",
-    accentBorder: "border-red-500/70",
-    badgeBg: "bg-red-900/90 text-amber-300 border-red-400/70"
+    bgGradient: "from-[#36050c] via-[#200206] to-[#0f0102]",
+    glowColor: "rgba(239, 68, 68, 0.28)",
+    badgeBg: "bg-red-900/80 text-amber-300 border-red-700/60"
   },
   6: {
-    bgGradient: "from-[#311306] via-[#1f0a03] to-[#0e0301]",
-    glowColor: "rgba(217, 119, 6, 0.25)",
-    accentBorder: "border-amber-600/60",
-    badgeBg: "bg-amber-900/90 text-amber-200 border-amber-400/70"
+    bgGradient: "from-[#2c1005] via-[#1a0802] to-[#0b0301]",
+    glowColor: "rgba(217, 119, 6, 0.26)",
+    badgeBg: "bg-amber-900/80 text-amber-200 border-amber-700/60"
   },
   7: {
-    bgGradient: "from-[#380819] via-[#23040f] to-[#110207]",
-    glowColor: "rgba(244, 63, 94, 0.24)",
-    accentBorder: "border-red-600/60",
-    badgeBg: "bg-red-950/90 text-amber-300 border-red-500/70"
+    bgGradient: "from-[#320717] via-[#1e030d] to-[#0e0105]",
+    glowColor: "rgba(244, 63, 94, 0.26)",
+    badgeBg: "bg-red-950/80 text-amber-300 border-red-800/60"
   },
   8: {
-    bgGradient: "from-[#2c0c14] via-[#1a050b] to-[#0a0204]",
-    glowColor: "rgba(250, 204, 21, 0.24)",
-    accentBorder: "border-amber-500/60",
-    badgeBg: "bg-amber-950/90 text-amber-300 border-amber-400/70"
+    bgGradient: "from-[#260a12] via-[#170509] to-[#080203]",
+    glowColor: "rgba(250, 204, 21, 0.26)",
+    badgeBg: "bg-amber-950/80 text-amber-300 border-amber-600/60"
   }
 };
 
 export const COLOR_IMAGES = {
+  // Chân dung Bác Hồ các thời kỳ
+  nguyenAiQuocTre: "images/nguyen_ai_quoc_tre.jpg",
   bacHoPortraitColor: "images/bac_ho_portrait_color.jpg",
   bacHoUncleHoColor: "images/bac_ho_uncle_ho_color.jpg",
   bacHoBerlinColor: "images/ho_chi_minh_color_berlin.jpg",
-  bacHoTranDiaTenLua: "images/bac_ho_tran_dia_ten_lua.jpg",
+  bacHo1946: "images/bac_ho_1946_portrait.jpg",
+  hoChiMinh1946: "images/ho_chi_minh_1946.jpg",
   bacHo1950s: "images/bac_ho_1950s.jpg",
   bacHo1964: "images/bac_ho_1964.jpg",
-  bacHoDaiDoan308: "images/bac_ho_dai_doan_308.jpg",
-  bacHoThieuNhi: "images/bac_ho_thieu_nhi.jpg",
-  bacHoVoNguyenGiap: "images/bac_ho_vo_nguyen_giap.jpg",
-  bacHoTuyenNgon: "images/bac_ho_tuyen_ngon.jpg",
-  dienBienPhu: "images/dien_bien_phu.jpg",
-  giaiPhong1975: "images/giai_phong_1975.jpg",
-  cachMangThangTam: "images/cach_mang_thang_tam.jpg",
-  coDoSaoVang: "images/co_do_sao_vang.svg",
-  quanDoiNhanDan: "images/quan_doi_nhan_dan.jpg",
-  quocHoi1946: "images/quoc_hoi_khoa_1_1946.jpg",
+  
+  // Pác Bó, Tân Trào, Khởi nghĩa & Nước VNDCCH non trẻ
+  bacHoVeNuoc1941: "images/bac_ho_ve_nuoc_1941.jpg",
+  lanKhuoiNamPacBo: "images/lan_khuoi_nam_pac_bo.jpg",
+  banDaChongDichPacBo: "images/ban_da_chong_dich_pac_bo.jpg",
+  xoVietNgheTinh1930: "images/xo_viet_nghe_tinh_1930.jpg",
+  temBacHo1946: "images/tem_bac_ho_1946.jpg",
   bacHoTanTrao: "images/bac_ho_tan_trao_1945.jpg",
-  bacHoVietBac: "images/bac_ho_viet_bac.jpg"
+  bacHoOssTanTrao: "images/bac_ho_oss_1945.png",
+  cachMangThangTam: "images/cach_mang_thang_tam.jpg",
+  bacHoTuyenNgon: "images/bac_ho_tuyen_ngon.jpg",
+  quocHoi1946: "images/quoc_hoi_khoa_1_1946.jpg",
+  vietNamDanChuCongHoa: "images/viet_nam_dan_chu_cong_hoa.jpg",
+  
+  // Kháng chiến chống Pháp & Điện Biên Phủ
+  bacHoVietBac: "images/bac_ho_viet_bac.jpg",
+  bacHoVietBac1951: "images/bac_ho_viet_bac_1951.jpg",
+  bacHoChienSiThiDua1952: "images/bac_ho_chien_si_thi_dua_1952.jpg",
+  bacHoHopDienBienPhu1953: "images/bac_ho_hop_dien_bien_phu_1953.jpg",
+  dienBienPhu: "images/dien_bien_phu.jpg",
+  coQuyetChienQuyetThangDbp: "images/co_quyet_chien_quyet_thang_dbp.jpg",
+  bacHoThuongHuyHieuDbp: "images/bac_ho_thuong_huy_hieu_dbp.jpg",
+  bacHoThamNongDan1954: "images/bac_ho_tham_nong_dan_1954.jpg",
+  bacHoDenHung1954: "images/bac_ho_den_hung_1954.jpg",
+  bacHoDaiDoan308: "images/bac_ho_dai_doan_308.jpg",
+  
+  // Kháng chiến chống Mỹ & Xây dựng CNXH Miền Bắc
+  bacHoTetTrongCay1960: "images/bac_ho_tet_trong_cay_1960.jpg",
+  bacHoQuangKhanDo1960: "images/bac_ho_quang_khan_do_1960.jpg",
+  bacHoVoNguyenGiap1962: "images/bac_ho_vo_nguyen_giap_1962.jpg",
+  bacHoVoNguyenGiap: "images/bac_ho_vo_nguyen_giap.jpg",
+  hoiNghiChinhTriDacBiet1964: "images/hoi_nghi_chinh_tri_dac_biet_1964.jpg",
+  bacHoTranDiaTenLua: "images/bac_ho_tran_dia_ten_lua.jpg",
+  bacHoHaiQuan: "images/bac_ho_hai_quan.jpg",
+  bacHoLeDuanPhamVanDong1969: "images/bac_ho_le_duan_pham_van_dong_1969.jpg",
+  
+  // Thiếu nhi, Dân tộc & Di sản thiêng liêng
+  bacHoThieuNhi: "images/bac_ho_thieu_nhi.jpg",
+  bacHoThieuNhi2: "images/bac_ho_thieu_nhi_2.jpg",
+  bacHoPionieren: "images/bac_ho_pionieren.jpg",
+  nhaSanBacHo: "images/nha_san_bac_ho.jpg",
+  langBac: "images/lang_chu_tich_ho_chi_minh.jpg",
+  quanDoiNhanDan: "images/quan_doi_nhan_dan.jpg",
+  giaiPhong1975: "images/giai_phong_1975.jpg",
+  coDoSaoVang: "images/co_do_sao_vang.svg"
 };
-
-// 6 kiểu Layout luân phiên:
-// 1. 'left-text-right-img': Chữ Trái - Ảnh Phải
-// 2. 'left-img-right-text': Ảnh Trái - Chữ Phải
-// 3. 'bento-grid': Bento Grid nghệ thuật
-// 4. 'top-banner-bottom-split': Tiêu đề & Trích dẫn lớn phía Trên, 2 cột Nội dung & Ảnh phía Dưới
-// 5. 'spotlight-center': Ảnh Bác Hồ trang trọng ở giữa, các khối nội dung bao quanh
-// 6. 'grid-cards-dual': Ảnh màu trên cao, các thẻ luận điểm dạng lưới 2x2 phía dưới
 
 export const EXPANDED_SLIDE_CHAPTERS = [
   {
@@ -98,8 +118,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Các phong trào theo khuynh hướng tư sản (Đông Du, Duy Tân, VN Quốc dân Đảng) bế tắc.",
           "Dân tộc Việt Nam chìm trong khủng hoảng sâu sắc về đường lối cứu nước."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.nguyenAiQuocTre,
+        secondaryImage: COLOR_IMAGES.xoVietNgheTinh1930,
         quote: "Nước mất, nhà tan, nhân dân lầm than trong kiếp nô lệ."
       },
       {
@@ -114,7 +134,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Khảo sát thực tiễn Cách mạng Mỹ (1776), Pháp (1789) và Cách mạng Tháng Mười Nga (1917)."
         ],
         primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        secondaryImage: COLOR_IMAGES.bacHoVeNuoc1941,
         quote: "Đây là cái cần thiết cho chúng ta, đây là con đường giải phóng chúng ta!"
       },
       {
@@ -128,8 +148,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Phương Đông thuộc địa: Mâu thuẫn giữa Toàn thể Dân tộc với Thực dân xâm lược.",
           "Không thể áp dụng giáo điều máy móc, phải vận dụng sáng tạo vào Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHo1950s,
-        secondaryImage: COLOR_IMAGES.bacHoTanTrao,
+        primaryImage: COLOR_IMAGES.banDaChongDichPacBo,
+        secondaryImage: COLOR_IMAGES.lanKhuoiNamPacBo,
         quote: "Học tập Mác - Lênin là nắm lấy tinh thần và phương pháp, không giáo điều."
       },
       {
@@ -143,8 +163,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Đường lối: Làm tư sản dân quyền cách mạng và thổ địa cách mạng tiến lên XHCN.",
           "Khẳng định độc lập dân tộc là mục tiêu hàng đầu, quyết định của cách mạng."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.temBacHo1946,
+        secondaryImage: COLOR_IMAGES.vietNamDanChuCongHoa,
         quote: "Đánh đổ đế quốc chủ nghĩa Pháp và phong kiến, làm cho nước Nam hoàn toàn độc lập."
       },
       {
@@ -158,7 +178,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Đặt nền móng lý luận vững chắc cho thắng lợi của Cách mạng Tháng Tám 1945.",
           "Mở ra kỷ nguyên độc lập tự do và kỷ nguyên làm chủ của nhân dân Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
+        primaryImage: COLOR_IMAGES.bacHoTanTrao,
         secondaryImage: COLOR_IMAGES.cachMangThangTam,
         quote: "Độc lập dân tộc là ngọn cờ dẫn dắt mọi thắng lợi vẻ vang của dân tộc."
       }
@@ -179,7 +199,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Hạn chế: Chỉ đóng khung trong phạm vi giai cấp tư sản và người da trắng.",
           "Nghịch lý: Các nước tư bản phương Tây lại đem quân xâm lược và tước đoạt nhân quyền thuộc địa!"
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
+        primaryImage: COLOR_IMAGES.bacHo1946,
         secondaryImage: COLOR_IMAGES.bacHoTuyenNgon,
         quote: "Tạo hóa cho họ những quyền không ai có thể xâm phạm được."
       },
@@ -194,8 +214,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Dân tộc nào cũng có quyền sống, quyền sung sướng và quyền tự do.",
           "Cống hiến vô giá cho triết học chính trị và pháp lý nhân loại thế kỷ XX."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.quocHoi1946,
+        secondaryImage: COLOR_IMAGES.hoChiMinh1946,
         quote: "Suy rộng ra, câu ấy có nghĩa là: Tất cả các dân tộc trên thế giới đều sinh ra bình đẳng."
       },
       {
@@ -209,7 +229,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Quyền dân tộc tự quyết là điều kiện tiên quyết bảo đảm mọi quyền sống của người dân.",
           "Đấu tranh giải phóng dân tộc chính là cuộc đấu tranh bảo vệ nhân quyền cao nhất."
         ],
-        primaryImage: COLOR_IMAGES.bacHo1964,
+        primaryImage: COLOR_IMAGES.bacHoVietBac,
         secondaryImage: COLOR_IMAGES.dienBienPhu,
         quote: "Nước mất thì nhà tan, dân mang kiếp nô lệ thì lấy đâu ra quyền con người!"
       },
@@ -225,7 +245,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Được Liên Hợp Quốc và bạn bè quốc tế trân trọng ghi nhận và tôn vinh."
         ],
         primaryImage: COLOR_IMAGES.bacHoBerlinColor,
-        secondaryImage: COLOR_IMAGES.giaiPhong1975,
+        secondaryImage: COLOR_IMAGES.bacHoOssTanTrao,
         quote: "Tuyên ngôn 1945 là bản Tuyên ngôn Nhân quyền của các dân tộc bị áp bức toàn cầu."
       },
       {
@@ -239,8 +259,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Minh chứng hùng hồn cho tinh thần thượng tôn pháp lý quốc tế của nước Việt Nam mới.",
           "Khẳng định sự thật lịch sử: Việt Nam đã giành lại đất nước từ tay phát xít Nhật."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.quocHoi1946,
+        primaryImage: COLOR_IMAGES.bacHo1950s,
+        secondaryImage: COLOR_IMAGES.coDoSaoVang,
         quote: "Nước Việt Nam có quyền hưởng tự do và độc lập, và sự thật đã thành một nước tự do độc lập."
       },
       {
@@ -255,7 +275,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Kim chỉ nam vững bền cho bảo vệ chủ quyền toàn vẹn lãnh thổ hiện nay."
         ],
         primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        secondaryImage: COLOR_IMAGES.giaiPhong1975,
         quote: "Không có gì quý hơn độc lập, tự do!"
       }
     ]
@@ -275,8 +295,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Độc lập phải mang lại sự giải phóng thực tế và quyền làm chủ cho quần chúng lao động.",
           "Bác Hồ chỉ rõ: Nền độc lập phải là độc lập hoàn toàn, triệt để và thực chất."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        primaryImage: COLOR_IMAGES.nhaSanBacHo,
+        secondaryImage: COLOR_IMAGES.bacHoVietBac1951,
         quote: "Nước độc lập mà dân không hưởng hạnh phúc tự do, thì độc lập cũng chẳng có nghĩa lý gì."
       },
       {
@@ -290,8 +310,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "3. Diệt giặc ngoại xâm: Xây dựng lực lượng vũ trang bảo vệ nền cộng hòa non trẻ.",
           "Gắn kết chặt chẽ vận mệnh độc lập với từng bữa cơm, manh áo của nhân dân."
         ],
-        primaryImage: COLOR_IMAGES.bacHoThieuNhi,
-        secondaryImage: COLOR_IMAGES.quocHoi1946,
+        primaryImage: COLOR_IMAGES.bacHoThamNongDan1954,
+        secondaryImage: COLOR_IMAGES.bacHoThieuNhi,
         quote: "Chúng ta phải làm cho dân có ăn, có mặc, có chỗ ở, có học hành."
       },
       {
@@ -305,8 +325,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Việc gì có hại cho dân, ta phải hết sức tránh.",
           "Xây dựng chính quyền liêm chính, tuyệt đối không được quan liêu, hách dịch."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.bacHoDaiDoan308,
+        primaryImage: COLOR_IMAGES.bacHoTetTrongCay1960,
+        secondaryImage: COLOR_IMAGES.bacHoChienSiThiDua1952,
         quote: "Ủy ban nhân dân là người gánh việc chung cho dân, chứ không phải để đè đầu cưỡi cổ dân."
       },
       {
@@ -335,8 +355,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Quyền bình đẳng của phụ nữ, đồng bào thiểu số và các tầng lớp lao động.",
           "Khát vọng vươn lên xây dựng đất nước đàng hoàng hơn, to đẹp hơn."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.giaiPhong1975,
+        primaryImage: COLOR_IMAGES.bacHoThieuNhi2,
+        secondaryImage: COLOR_IMAGES.bacHoQuangKhanDo1960,
         quote: "Dân chỉ biết giá trị của tự do, độc lập khi dân được ăn no, mặc ấm và học hành."
       },
       {
@@ -350,8 +370,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Tạo nên chất keo gắn kết bền chặt lòng dân với sự nghiệp cách mạng vẻ vang.",
           "Cơ sở lý luận nền tảng cho Nhà nước pháp quyền xã hội chủ nghĩa Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHo1964,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.bacHoPionieren,
+        secondaryImage: COLOR_IMAGES.langBac,
         quote: "Tôi chỉ có một sự ham muốn, ham muốn tột bậc, là làm sao cho nước ta được hoàn toàn độc lập, dân ta được hoàn toàn tự do."
       }
     ]
@@ -371,8 +391,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Hoàng Hoa Thám: Khởi nghĩa nông dân Yên Thế ➔ Mang tính tự phát, thiếu hệ tư tưởng dẫn đường.",
           "Nguyễn Ái Quốc rút ra bài học: Không thể giải phóng dân tộc theo hệ tư tưởng cũ."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        primaryImage: COLOR_IMAGES.nguyenAiQuocTre,
+        secondaryImage: COLOR_IMAGES.temBacHo1946,
         quote: "Muốn cứu nước và giải phóng dân tộc không có con đường nào khác con đường cách mạng vô sản."
       },
       {
@@ -386,8 +406,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Cách mạng Tháng Mười Nga (1917): Là cuộc cách mạng triệt để nhất, 'cách mệnh đến nơi'.",
           "Mở ra thời đại mới giải phóng cả giai cấp lao động lẫn các dân tộc bị đô hộ."
         ],
-        primaryImage: COLOR_IMAGES.bacHo1950s,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.bacHoVeNuoc1941,
+        secondaryImage: COLOR_IMAGES.banDaChongDichPacBo,
         quote: "Trong thế giới bây giờ chỉ có cách mệnh Nga là đã thành công, và thành công đến nơi."
       },
       {
@@ -401,8 +421,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Đảng là đội ngũ tiên phong, quy tụ những chiến sĩ kiên trung nhất của dân tộc.",
           "Đảng đại biểu cho lợi ích của giai cấp công nhân, nhân dân lao động và toàn thể dân tộc."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.quocHoi1946,
+        primaryImage: COLOR_IMAGES.bacHoHopDienBienPhu1953,
+        secondaryImage: COLOR_IMAGES.lanKhuoiNamPacBo,
         quote: "Đảng có vững cách mệnh mới thành công, cũng như người cầm lái có vững thuyền mới chạy."
       },
       {
@@ -417,7 +437,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Quy tụ sức mạnh toàn dân trong Mặt trận Dân tộc Thống nhất."
         ],
         primaryImage: COLOR_IMAGES.bacHoDaiDoan308,
-        secondaryImage: COLOR_IMAGES.dienBienPhu,
+        secondaryImage: COLOR_IMAGES.bacHoThamNongDan1954,
         quote: "Công nông là gốc cách mệnh; còn học trò, nhà buôn nhỏ, địa chủ nhỏ là bầu bạn cách mệnh."
       },
       {
@@ -432,7 +452,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Luôn kiên định nguyên tắc tự lực, tự cường, không trông chờ thụ động."
         ],
         primaryImage: COLOR_IMAGES.bacHoBerlinColor,
-        secondaryImage: COLOR_IMAGES.quanDoiNhanDan,
+        secondaryImage: COLOR_IMAGES.bacHoPionieren,
         quote: "Sự kết hợp giữa sức mạnh dân tộc và sức mạnh thời đại tạo nên sức mạnh vô địch."
       },
       {
@@ -446,8 +466,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Khẳng định thiên tài tư tưởng của Nguyễn Ái Quốc - Hồ Chí Minh.",
           "Ngọn cờ lý luận bất diệt soi đường cho cách mạng hôm nay và mai sau."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.giaiPhong1975,
+        primaryImage: COLOR_IMAGES.bacHo1964,
+        secondaryImage: COLOR_IMAGES.coQuyetChienQuyetThangDbp,
         quote: "Con đường cách mạng vô sản là con đường giải phóng duy nhất đúng đắn."
       }
     ]
@@ -467,8 +487,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Việt Nam thuộc địa: Mâu thuẫn bao trùm là giữa toàn thể Dân tộc với Thực dân xâm lược.",
           "Mọi giai cấp trong nước (công, nông, trí, tư sản dân tộc) đều chung kiếp mất nước."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        primaryImage: COLOR_IMAGES.hoChiMinh1946,
+        secondaryImage: COLOR_IMAGES.quocHoi1946,
         quote: "Cuộc đấu tranh ở thuộc địa trước hết là cuộc đấu tranh sinh tử để giải phóng dân tộc."
       },
       {
@@ -482,8 +502,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Thành lập Mặt trận Việt Minh để quy tụ toàn thể những người có lòng yêu nước.",
           "Lợi ích giai cấp bộ phận phải phục tùng nhiệm vụ giải phóng dân tộc tối thượng."
         ],
-        primaryImage: COLOR_IMAGES.bacHoTanTrao,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.lanKhuoiNamPacBo,
+        secondaryImage: COLOR_IMAGES.bacHoVeNuoc1941,
         quote: "Quyền lợi của bộ phận, của giai cấp phải phục tùng sự sinh tử, tồn vong của quốc gia, của dân tộc."
       },
       {
@@ -497,7 +517,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Giải phóng dân tộc là tiền đề sống còn để tiến hành giải phóng giai cấp.",
           "Độc lập cho Tổ quốc là ngọn đuốc mở đường cho ấm no xã hội chủ nghĩa."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
+        primaryImage: COLOR_IMAGES.bacHoTanTrao,
         secondaryImage: COLOR_IMAGES.cachMangThangTam,
         quote: "Không giải quyết được vấn đề dân tộc thì quyền lợi bộ phận, giai cấp vạn năm cũng không đòi lại được."
       },
@@ -512,8 +532,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Xóa bỏ những định kiến giai cấp giáo điều hẹp hòi gây chia rẽ lực lượng cách mạng.",
           "Đúc kết sức mạnh vĩ đại của tinh thần dân tộc chân chính Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHoDaiDoan308,
-        secondaryImage: COLOR_IMAGES.quocHoi1946,
+        primaryImage: COLOR_IMAGES.bacHoHaiQuan,
+        secondaryImage: COLOR_IMAGES.bacHoDenHung1954,
         quote: "Đoàn kết, đoàn kết, đại đoàn kết. Thành công, thành công, đại thành công."
       },
       {
@@ -528,7 +548,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Thực tiễn Cách mạng Tháng Tám và hai cuộc kháng chiến đã chứng minh chân lý rực rỡ."
         ],
         primaryImage: COLOR_IMAGES.bacHoTranDiaTenLua,
-        secondaryImage: COLOR_IMAGES.dienBienPhu,
+        secondaryImage: COLOR_IMAGES.coQuyetChienQuyetThangDbp,
         quote: "Chủ nghĩa yêu nước chân chính là động lực to lớn của dân tộc ta."
       },
       {
@@ -563,8 +583,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Hồ Chí Minh kiên quyết đứng lên phê phán và bác bỏ luận điểm sai lầm đó.",
           "Khẳng định nhân dân thuộc địa hoàn toàn có đủ tiềm năng và ý chí tự đứng lên giải phóng."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        primaryImage: COLOR_IMAGES.bacHoVietBac1951,
+        secondaryImage: COLOR_IMAGES.bacHoOssTanTrao,
         quote: "Cách mạng thuộc địa không phụ thuộc một cách thụ động vào cách mạng ở chính quốc."
       },
       {
@@ -579,7 +599,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Muốn tiêu diệt con đỉa, phải chặt đứt cả hai vòi, và thuộc địa là nơi mắt xích yếu nhất!"
         ],
         primaryImage: COLOR_IMAGES.bacHo1950s,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        secondaryImage: COLOR_IMAGES.vietNamDanChuCongHoa,
         quote: "Nọc độc và sức sống của con đỉa tư bản thực dân nằm chính ở các thuộc địa."
       },
       {
@@ -608,8 +628,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Tự lực cánh sinh, gian khổ phấn đấu là truyền thống quật cường của dân tộc ta.",
           "Dám đánh, quyết đánh và biết cách đánh thắng mọi kẻ thù xâm lược."
         ],
-        primaryImage: COLOR_IMAGES.bacHoTranDiaTenLua,
-        secondaryImage: COLOR_IMAGES.quanDoiNhanDan,
+        primaryImage: COLOR_IMAGES.bacHoThuongHuyHieuDbp,
+        secondaryImage: COLOR_IMAGES.dienBienPhu,
         quote: "Đem sức ta mà tự giải phóng cho ta!"
       },
       {
@@ -624,7 +644,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Minh chứng hùng hồn cho thiên tài dự báo lý luận xuất chúng của Bác Hồ."
         ],
         primaryImage: COLOR_IMAGES.bacHoDaiDoan308,
-        secondaryImage: COLOR_IMAGES.dienBienPhu,
+        secondaryImage: COLOR_IMAGES.coQuyetChienQuyetThangDbp,
         quote: "Thực tiễn Cách mạng Việt Nam đã chứng minh chân lý sáng ngời của Hồ Chí Minh."
       },
       {
@@ -638,8 +658,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Tự chủ kinh tế, làm chủ công nghệ, xây dựng nền quốc phòng vững mạnh.",
           "Xây dựng đất nước hùng cường bằng chính trí tuệ và bàn tay người Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.giaiPhong1975,
+        primaryImage: COLOR_IMAGES.bacHoVoNguyenGiap1962,
+        secondaryImage: COLOR_IMAGES.quanDoiNhanDan,
         quote: "Tự lực tự cường là bí quyết vĩ đại nhất để giữ vững nền độc lập."
       }
     ]
@@ -660,7 +680,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Bảo đảm cho đất nước độc lập vĩnh viễn và nhân dân hạnh phúc thực sự."
         ],
         primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        secondaryImage: COLOR_IMAGES.nhaSanBacHo,
         quote: "Độc lập dân tộc là tiền đề, chủ nghĩa xã hội là bảo đảm vững bền."
       },
       {
@@ -674,8 +694,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Không giành được độc lập thì mọi lý thuyết xây dựng CNXH đều trở nên vô nghĩa.",
           "Độc lập là bậc thang đầu tiên vững chắc để dân tộc bước lên nấc thang CNXH."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
-        secondaryImage: COLOR_IMAGES.cachMangThangTam,
+        primaryImage: COLOR_IMAGES.bacHoTuyenNgon,
+        secondaryImage: COLOR_IMAGES.hoChiMinh1946,
         quote: "Không có độc lập thì không thể nói tới việc xây dựng chủ nghĩa xã hội."
       },
       {
@@ -690,7 +710,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Làm cho toàn dân đồng lòng quyết tử giữ gìn từng tấc đất thiêng liêng của Tổ quốc."
         ],
         primaryImage: COLOR_IMAGES.bacHoTranDiaTenLua,
-        secondaryImage: COLOR_IMAGES.quanDoiNhanDan,
+        secondaryImage: COLOR_IMAGES.bacHoHaiQuan,
         quote: "Chỉ có chủ nghĩa xã hội mới mang lại thành trì kiên cố bảo vệ nền độc lập."
       },
       {
@@ -704,8 +724,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Là cơm no áo ấm, trẻ em được cắp sách tới trường, người già được phụng dưỡng.",
           "Là giải phóng con người khỏi nghèo nàn, lạc hậu, phát triển tự do toàn diện."
         ],
-        primaryImage: COLOR_IMAGES.bacHoThieuNhi,
-        secondaryImage: COLOR_IMAGES.bacHo1964,
+        primaryImage: COLOR_IMAGES.bacHoThamNongDan1954,
+        secondaryImage: COLOR_IMAGES.bacHoTetTrongCay1960,
         quote: "Chủ nghĩa xã hội trước hết là làm cho nhân dân thoát nghèo, được ăn no mặc ấm và sống cuộc đời hạnh phúc."
       },
       {
@@ -719,8 +739,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Đây là sự nghiệp sáng tạo vĩ đại nhưng cũng đầy thử thách cam go.",
           "Đòi hỏi đổi mới không ngừng tư duy kinh tế và phương thức quản lý xã hội."
         ],
-        primaryImage: COLOR_IMAGES.bacHoBerlinColor,
-        secondaryImage: COLOR_IMAGES.bacHoVietBac,
+        primaryImage: COLOR_IMAGES.hoiNghiChinhTriDacBiet1964,
+        secondaryImage: COLOR_IMAGES.bacHoChienSiThiDua1952,
         quote: "Xây dựng chủ nghĩa xã hội là một cuộc cách mạng lâu dài, gian khổ nhưng nhất định thắng lợi."
       },
       {
@@ -734,7 +754,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Soi đường cho công cuộc Đổi mới, phát triển kinh tế thị trường định hướng XHCN.",
           "Khát vọng hiện thực hóa mục tiêu dân giàu, nước mạnh, dân chủ, văn minh."
         ],
-        primaryImage: COLOR_IMAGES.bacHoUncleHoColor,
+        primaryImage: COLOR_IMAGES.bacHoLeDuanPhamVanDong1969,
         secondaryImage: COLOR_IMAGES.giaiPhong1975,
         quote: "Độc lập dân tộc gắn liền với chủ nghĩa xã hội là con đường phát triển duy nhất đúng đắn."
       }
@@ -755,8 +775,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "UNESCO ra Nghị quyết tôn vinh Hồ Chí Minh là Anh hùng giải phóng dân tộc, Nhà văn hóa kiệt xuất.",
           "Biểu tượng sáng ngời cho tinh thần hòa bình, hữu nghị và hợp tác giữa các quốc gia."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
-        secondaryImage: COLOR_IMAGES.coDoSaoVang,
+        primaryImage: COLOR_IMAGES.langBac,
+        secondaryImage: COLOR_IMAGES.bacHoBerlinColor,
         quote: "Hồ Chí Minh là biểu tượng bất diệt của khát vọng độc lập, tự do cho các dân tộc."
       },
       {
@@ -785,8 +805,8 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Kết hợp sức mạnh quốc phòng với đấu tranh chính trị, pháp lý và ngoại giao hòa bình.",
           "Giữ vững môi trường hòa bình, ổn định bền vững để kiến thiết và phát triển non sông."
         ],
-        primaryImage: COLOR_IMAGES.bacHoDaiDoan308,
-        secondaryImage: COLOR_IMAGES.quanDoiNhanDan,
+        primaryImage: COLOR_IMAGES.bacHoDenHung1954,
+        secondaryImage: COLOR_IMAGES.bacHoHaiQuan,
         quote: "Các Vua Hùng đã có công dựng nước, Bác cháu ta phải cùng nhau giữ lấy nước."
       },
       {
@@ -800,7 +820,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Thực hành dân chủ rộng rãi, phát huy cao độ quyền làm chủ thực chất của nhân dân.",
           "Củng cố mối quan hệ máu thịt gắn bó keo sơn giữa Đảng và nhân dân."
         ],
-        primaryImage: COLOR_IMAGES.bacHo1964,
+        primaryImage: COLOR_IMAGES.hoiNghiChinhTriDacBiet1964,
         secondaryImage: COLOR_IMAGES.quocHoi1946,
         quote: "Đảng ta là một Đảng cầm quyền. Mỗi đảng viên phải thật sự thấm nhuần đạo đức cách mạng."
       },
@@ -815,7 +835,7 @@ export const EXPANDED_SLIDE_CHAPTERS = [
           "Hiện thực hóa Di chúc thiêng liêng: Xây dựng đất nước ta đàng hoàng hơn, to đẹp hơn.",
           "Tự tin bước vào kỷ nguyên mới – Kỷ nguyên vươn mình của dân tộc Việt Nam."
         ],
-        primaryImage: COLOR_IMAGES.bacHoPortraitColor,
+        primaryImage: COLOR_IMAGES.bacHoLeDuanPhamVanDong1969,
         secondaryImage: COLOR_IMAGES.coDoSaoVang,
         quote: "Toàn Đảng, toàn dân ta quyết tâm xây dựng một nước Việt Nam hòa bình, thống nhất, độc lập, dân chủ và giàu mạnh."
       }

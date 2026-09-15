@@ -182,9 +182,10 @@ export default function SlideView({ onOpenImage }) {
   };
 
   // Render Image Box with 100% natural aspect ratio (object-contain, no cropping)
+  // Completely borderless, seamless blending with the slide's ambient background tone
   const renderImageBox = (imgSrc, altText, className = "h-56") => (
     <div
-      className={`relative group rounded-2xl border-2 border-amber-500/40 bg-black/60 shadow-xl overflow-hidden cursor-pointer flex items-center justify-center p-1.5 transition-all hover:border-amber-400 ${className}`}
+      className={`relative group rounded-2xl overflow-hidden cursor-pointer flex items-center justify-center p-2 transition-all duration-300 bg-black/25 backdrop-blur-md shadow-2xl hover:bg-black/40 ${className}`}
       onClick={() => onOpenImage({
         url: resolveImgSrc(imgSrc),
         title: currentSlide.subtitle,
@@ -197,12 +198,20 @@ export default function SlideView({ onOpenImage }) {
         src={resolveImgSrc(imgSrc)}
         alt={altText}
         loading="eager"
-        className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-[1.02]"
+        className="max-h-full max-w-full object-contain rounded-xl transition-all duration-500 group-hover:scale-[1.03] filter drop-shadow-[0_10px_25px_rgba(0,0,0,0.65)]"
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = resolveImgSrc('images/bac_ho_portrait_color.jpg');
         }}
       />
+      {/* Soft subtle ambient vignette overlay blending the edges into the slide gradient */}
+      <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-t from-black/45 via-transparent to-black/15 opacity-60 group-hover:opacity-20 transition-opacity duration-300" />
+      
+      {/* Discreet zoom badge indicator appearing smoothly on hover */}
+      <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-amber-200/90 text-[11px] font-medium opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center gap-1.5 shadow-lg pointer-events-none">
+        <Sparkles className="w-3 h-3 text-amber-400" />
+        <span>Xem tư liệu</span>
+      </div>
     </div>
   );
 

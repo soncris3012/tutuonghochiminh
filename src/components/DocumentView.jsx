@@ -136,8 +136,8 @@ export default function DocumentView({ onOpenImage }) {
                       const imgSrc = resolveImgSrc(point.image.url);
 
                       return (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center bg-black/40 p-4 rounded-xl border border-stone-800">
-                          <div className="relative group cursor-pointer overflow-hidden rounded-lg border border-red-900/40 aspect-[4/3]" onClick={() => onOpenImage({ ...point.image, url: imgSrc })}>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center bg-black/25 backdrop-blur-md p-4 rounded-2xl shadow-xl">
+                          <div className="relative group cursor-pointer overflow-hidden rounded-xl bg-black/30 flex items-center justify-center p-2 aspect-[4/3] shadow-lg" onClick={() => onOpenImage({ ...point.image, url: imgSrc })}>
                             <img
                               src={imgSrc}
                               alt={point.image.title}
@@ -146,10 +146,10 @@ export default function DocumentView({ onOpenImage }) {
                                 e.target.onerror = null;
                                 e.target.src = resolveImgSrc('images/bac_ho_tuyen_ngon.jpg');
                               }}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              className="max-h-full max-w-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-105 filter drop-shadow-md"
                             />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-amber-300 text-xs font-semibold">
-                              <ImageIcon className="w-4 h-4" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2.5 text-amber-200 text-xs font-semibold gap-1.5">
+                              <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
                               <span>Xem Ảnh Lớn</span>
                             </div>
                           </div>
