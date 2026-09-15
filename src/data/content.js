@@ -4,43 +4,43 @@
 
 export const HISTORICAL_IMAGES = {
   bacHoTuyenNgon: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Ho_Chi_Minh_1946.jpg/800px-Ho_Chi_Minh_1946.jpg",
+    url: "images/bac_ho_tuyen_ngon.jpg",
     title: "Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập (02/09/1945)",
     caption: "Chủ tịch Hồ Chí Minh tại Quảng trường Ba Đình lịch sử, tuyên bố khai sinh nước Việt Nam Dân chủ Cộng hòa.",
     date: "2 tháng 9, 1945",
     location: "Quảng trường Ba Đình, Hà Nội"
   },
   bacHoAtVietBac: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Ho_Chi_Minh_in_1946.jpg/800px-Ho_Chi_Minh_in_1946.jpg",
+    url: "images/bac_ho_viet_bac.jpg",
     title: "Chủ tịch Hồ Chí Minh tại Chiến khu Việt Bắc",
     caption: "Bác Hồ làm việc tại lán Tỉn Keo, Định Hóa, Thái Nguyên trong thời kỳ kháng chiến chống Pháp.",
     date: "1947 - 1954",
     location: "Chiến khu Việt Bắc"
   },
   quanDoiDienBienPhu: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Vietminh_soldiers_in_Dien_Bien_Phu.jpg/800px-Vietminh_soldiers_in_Dien_Bien_Phu.jpg",
+    url: "images/dien_bien_phu.jpg",
     title: "Quân đội Nhân dân Việt Nam phất cờ chiến thắng tại Điện Biên Phủ",
     caption: "Lính bộ đội ta giương cao cờ 'Quyết chiến Quyết thắng' trên nóc hầm tướng De Castries ngày 7/5/1954.",
     date: "7 tháng 5, 1954",
     location: "Điện Biên Phủ"
   },
   bacHoVoiQuanDoi: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ho_Chi_Minh_and_Vo_Nguyen_Giap.jpg/800px-Ho_Chi_Minh_and_Vo_Nguyen_Giap.jpg",
+    url: "images/bac_ho_vo_nguyen_giap.jpg",
     title: "Chủ tịch Hồ Chí Minh và Đại tướng Võ Nguyên Giáp",
     caption: "Bác Hồ cùng Đại tướng Võ Nguyên Giáp thảo luận phương án chiến dịch giải phóng dân tộc.",
     date: "1950",
     location: "Căn cứ địa Việt Bắc"
   },
   cachMangThangTam: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Hanoi_August_1945.jpg/800px-Hanoi_August_1945.jpg",
+    url: "images/cach_mang_thang_tam.jpg",
     title: "Quần chúng nhân dân Hà Nội khởi nghĩa giành chính quyền tháng 8/1945",
     caption: "Cuộc mít tinh lớn tại Quảng trường Nhà hát Lớn Hà Nội mở đầu cho Tổng khởi nghĩa tháng Tám thành công.",
     date: "19 tháng 8, 1945",
     location: "Hà Nội"
   },
   quanDoiGiaiPhong: {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Tanks_entering_Independence_Palace_Saigon_1975.jpg/800px-Tanks_entering_Independence_Palace_Saigon_1975.jpg",
-    title: "Xe tăng Quân Giải phóng húc văng cổng Dinh Độc Lập 30/4/1975",
+    url: "images/giai_phong_1975.jpg",
+    title: "Đại thắng mùa Xuân 1975 thống nhất non sông",
     caption: "Đại thắng mùa Xuân 1975, hoàn thành trọn vẹn sự nghiệp giải phóng dân tộc, thống nhất đất nước.",
     date: "30 tháng 4, 1975",
     location: "Sài Gòn - TP. Hồ Chí Minh"

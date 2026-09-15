@@ -124,33 +124,50 @@ export default function DocumentView({ onOpenImage }) {
                     </div>
 
                     {/* Real Historical Photo Section */}
-                    {point.image && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center bg-black/40 p-4 rounded-xl border border-stone-800">
-                        <div className="relative group cursor-pointer overflow-hidden rounded-lg border border-red-900/40 aspect-[4/3]" onClick={() => onOpenImage(point.image)}>
-                          <img
-                            src={point.image.url}
-                            alt={point.image.title}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-amber-300 text-xs font-semibold">
-                            <ImageIcon className="w-4 h-4" />
-                            <span>Xem Ảnh Lớn</span>
-                          </div>
-                        </div>
+                    {point.image && (() => {
+                      const resolveImgSrc = (path) => {
+                        if (!path) return '';
+                        if (path.startsWith('http')) return path;
+                        const base = import.meta.env.BASE_URL || './';
+                        const cleanBase = base.endsWith('/') ? base : base + '/';
+                        const cleanPath = path.startsWith('./') ? path.slice(2) : path.startsWith('/') ? path.slice(1) : path;
+                        return `${cleanBase}${cleanPath}`;
+                      };
+                      const imgSrc = resolveImgSrc(point.image.url);
 
-                        <div className="md:col-span-2 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-900/60 text-amber-300 border border-red-700">
-                              Ảnh Tư Liệu Thật
-                            </span>
-                            <span className="text-xs text-stone-400">{point.image.date}</span>
+                      return (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center bg-black/40 p-4 rounded-xl border border-stone-800">
+                          <div className="relative group cursor-pointer overflow-hidden rounded-lg border border-red-900/40 aspect-[4/3]" onClick={() => onOpenImage({ ...point.image, url: imgSrc })}>
+                            <img
+                              src={imgSrc}
+                              alt={point.image.title}
+                              loading="eager"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = resolveImgSrc('images/bac_ho_tuyen_ngon.jpg');
+                              }}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-amber-300 text-xs font-semibold">
+                              <ImageIcon className="w-4 h-4" />
+                              <span>Xem Ảnh Lớn</span>
+                            </div>
                           </div>
-                          <h4 className="text-sm font-bold text-amber-200">{point.image.title}</h4>
-                          <p className="text-xs text-stone-300 leading-relaxed">{point.image.caption}</p>
-                          <p className="text-[11px] text-stone-400 italic">Địa điểm: {point.image.location}</p>
+
+                          <div className="md:col-span-2 space-y-2">
+                            <div className="flex items-center gap-2">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-900/60 text-amber-300 border border-red-700">
+                                Ảnh Tư Liệu Thật
+                              </span>
+                              <span className="text-xs text-stone-400">{point.image.date}</span>
+                            </div>
+                            <h4 className="text-sm font-bold text-amber-200">{point.image.title}</h4>
+                            <p className="text-xs text-stone-300 leading-relaxed">{point.image.caption}</p>
+                            <p className="text-[11px] text-stone-400 italic">Địa điểm: {point.image.location}</p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {/* Comparative Analysis: Western vs Ho Chi Minh */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
