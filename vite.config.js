@@ -2,10 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
-// https://vitejs.dev/config/
+// Relative base path ('./') makes the app work seamlessly on GitHub Pages, Vercel, and local servers
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/tutuonghochiminh/',
+  base: './',
   build: {
     outDir: 'dist',
   }
