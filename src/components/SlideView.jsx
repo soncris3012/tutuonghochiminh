@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { EXPANDED_SLIDE_CHAPTERS, CHAPTER_THEMES } from '../data/expandedSlides';
 import { 
   ChevronLeft, ChevronRight, Maximize2, Minimize2, RotateCcw, Play, Pause, 
-  Layers, Image as ImageIcon, Star, Quote, Sparkles 
+  Layers, Image as ImageIcon, Star, Sparkles 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -127,7 +127,7 @@ export default function SlideView({ onOpenImage }) {
     initial: (dir) => ({
       x: dir > 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.96
+      scale: 0.97
     }),
     animate: {
       x: 0,
@@ -138,22 +138,26 @@ export default function SlideView({ onOpenImage }) {
     exit: (dir) => ({
       x: dir < 0 ? 250 : -250,
       opacity: 0,
-      scale: 0.96,
+      scale: 0.97,
       transition: { duration: 0.25, ease: 'easeIn' }
     })
   };
 
   return (
-    <div className={`max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 transition-all ${isFullscreen ? 'fixed inset-0 z-50 bg-[#090305] p-4 flex flex-col justify-between overflow-y-auto' : ''}`}>
+    <div className={`transition-all ${
+      isFullscreen 
+        ? 'fixed inset-0 z-50 bg-[#070204] p-4 sm:p-6 flex flex-col justify-between w-full h-full overflow-hidden' 
+        : 'max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4'
+    }`}>
       
       {/* Top Controls Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 p-3.5 rounded-2xl glass-panel border border-red-900/40">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 p-3 rounded-2xl glass-panel border border-red-900/40 w-full">
         
         {/* Chapter & Slide Index Selector */}
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => setShowChapterMenu(!showChapterMenu)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950 text-amber-300 text-xs font-bold border border-red-700 hover:bg-red-900 transition-all shadow-sm"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-red-950 text-amber-300 text-xs font-bold border border-red-700 hover:bg-red-900 transition-all shadow-sm"
           >
             <Layers className="w-3.5 h-3.5 text-amber-400" />
             <span>{currentSlide.chapterTitle}</span>
@@ -180,7 +184,7 @@ export default function SlideView({ onOpenImage }) {
 
           <button
             onClick={toggleFullscreen}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-900 text-amber-300 hover:bg-red-900 border border-stone-700 text-xs font-bold transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-900 text-amber-300 hover:bg-red-900 border border-stone-700 text-xs font-bold transition-all shadow-sm"
             title="Phóng to Fullscreen Trình Chiếu như PowerPoint (Phím F)"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -208,7 +212,7 @@ export default function SlideView({ onOpenImage }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mb-4 p-4 rounded-2xl glass-panel border border-amber-500/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs"
+            className="mb-4 p-4 rounded-2xl glass-panel border border-amber-500/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs w-full"
           >
             {EXPANDED_SLIDE_CHAPTERS.map((chap) => (
               <button
@@ -235,17 +239,19 @@ export default function SlideView({ onOpenImage }) {
         )}
       </AnimatePresence>
 
-      {/* Main Slide Presentation Stage - Dynamic Background Tone based on Chapter Theme */}
+      {/* Main Slide Presentation Stage - Dynamic Background & Fullscreen Adaptability */}
       <div 
-        className={`relative min-h-[560px] rounded-3xl p-6 sm:p-10 flex flex-col justify-between shadow-2xl overflow-hidden border-2 transition-all duration-700 bg-gradient-to-br ${currentTheme.bgGradient} ${currentTheme.accentBorder}`}
+        className={`relative rounded-3xl p-6 sm:p-10 flex flex-col justify-between shadow-2xl overflow-hidden border-2 transition-all duration-700 bg-gradient-to-br ${currentTheme.bgGradient} ${currentTheme.accentBorder} ${
+          isFullscreen ? 'flex-1 h-full w-full' : 'min-h-[580px]'
+        }`}
         style={{
-          boxShadow: `0 20px 50px -10px ${currentTheme.glowColor}`
+          boxShadow: `0 25px 60px -15px ${currentTheme.glowColor}`
         }}
       >
         
         {/* Dynamic Ambient Background Aura & Decorative Star */}
         <div 
-          className="absolute -top-10 -right-10 w-96 h-96 rounded-full blur-3xl pointer-events-none transition-all duration-700" 
+          className="absolute -top-16 -right-16 w-96 h-96 rounded-full blur-3xl pointer-events-none transition-all duration-700" 
           style={{ background: currentTheme.glowColor }}
         />
         <Star className="absolute top-5 right-5 w-14 h-14 text-amber-400/10 pointer-events-none star-animated" />
@@ -258,11 +264,11 @@ export default function SlideView({ onOpenImage }) {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
+            className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
           >
             
             {/* Left Content Area (Title, Quote, Step-by-Step Bullets) */}
-            <div className="md:col-span-7 space-y-4">
+            <div className="lg:col-span-7 space-y-4">
               
               {/* Slide Header & Chapter Badge with dynamic chapter color */}
               <div>
@@ -276,13 +282,13 @@ export default function SlideView({ onOpenImage }) {
 
               {/* Quote Banner */}
               {currentSlide.quote && (
-                <div className="p-3.5 rounded-xl bg-black/40 border-l-4 border-amber-400 text-amber-100 text-xs italic font-serif-title shadow-sm">
+                <div className="p-3.5 rounded-xl bg-black/40 border-l-4 border-amber-400 text-amber-100 text-xs sm:text-sm italic font-serif-title shadow-sm">
                   "{currentSlide.quote}"
                 </div>
               )}
 
               {/* Bullet Points with Progressive Step-by-Step Reveal Animation */}
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-3 pt-1">
                 {currentSlide.bullets.map((bullet, idx) => {
                   const isVisible = idx < revealedBulletCount;
 
@@ -292,9 +298,9 @@ export default function SlideView({ onOpenImage }) {
                       initial={{ opacity: 0, x: -15 }}
                       animate={{ opacity: isVisible ? 1 : 0.15, x: isVisible ? 0 : -8 }}
                       transition={{ duration: 0.25 }}
-                      className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
+                      className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all ${
                         isVisible
-                          ? 'bg-black/50 border-amber-500/30 text-stone-100 shadow-md backdrop-blur-sm'
+                          ? 'bg-black/55 border-amber-500/35 text-stone-100 shadow-md backdrop-blur-sm'
                           : 'bg-black/10 border-transparent text-stone-600'
                       }`}
                     >
@@ -313,45 +319,78 @@ export default function SlideView({ onOpenImage }) {
 
             </div>
 
-            {/* Right Media Area (Real Archival Photography with High Quality Local Image Loading) */}
-            <div className="md:col-span-5 flex flex-col justify-center">
+            {/* Right Media Area: DUAL-IMAGE VIVID COLOR PHOTO GALLERY (Zero Empty Black Void!) */}
+            <div className="lg:col-span-5 flex flex-col gap-3 justify-center h-full">
+              
+              {/* Primary Image: Color Portrait of Uncle Ho */}
               <div
-                className="relative group overflow-hidden rounded-2xl border-2 border-amber-500/40 shadow-2xl bg-black/80 cursor-pointer aspect-[4/3]"
+                className="relative group overflow-hidden rounded-2xl border-2 border-amber-500/40 shadow-xl bg-black/80 cursor-pointer h-52 sm:h-60"
                 onClick={() => onOpenImage({
-                  url: resolveImgSrc(currentSlide.image),
+                  url: resolveImgSrc(currentSlide.primaryImage),
                   title: currentSlide.subtitle,
-                  caption: currentSlide.imageCaption,
-                  date: "Tư liệu lịch sử thực tế",
+                  caption: currentSlide.primaryCaption,
+                  date: "Tư liệu lịch sử màu",
                   location: "Việt Nam"
                 })}
               >
                 <img
-                  src={resolveImgSrc(currentSlide.image)}
-                  alt={currentSlide.subtitle}
+                  src={resolveImgSrc(currentSlide.primaryImage)}
+                  alt={currentSlide.primaryCaption}
                   loading="eager"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
-                    // Fallback to local default portrait if needed
                     e.target.onerror = null;
-                    e.target.src = resolveImgSrc('images/bac_ho_tuyen_ngon.jpg');
+                    e.target.src = resolveImgSrc('images/bac_ho_portrait_color.jpg');
                   }}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-end">
-                  <p className="text-xs font-bold text-amber-200">{currentSlide.imageCaption}</p>
-                  <span className="text-[10px] text-stone-300 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1 font-medium">
-                    <ImageIcon className="w-3 h-3 text-amber-400" />
-                    <span>Bấm để xem ảnh lớn</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3.5 flex flex-col justify-end">
+                  <p className="text-xs font-bold text-amber-200">{currentSlide.primaryCaption}</p>
+                  <span className="text-[10px] text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1 font-medium">
+                    <ImageIcon className="w-3 h-3" />
+                    <span>Bấm để phóng to</span>
                   </span>
                 </div>
               </div>
+
+              {/* Secondary Image: Historical Event / Army / Flag */}
+              <div
+                className="relative group overflow-hidden rounded-2xl border border-amber-500/30 shadow-lg bg-black/70 cursor-pointer h-36 sm:h-44"
+                onClick={() => onOpenImage({
+                  url: resolveImgSrc(currentSlide.secondaryImage),
+                  title: currentSlide.subtitle,
+                  caption: currentSlide.secondaryCaption,
+                  date: "Tư liệu sự kiện lịch sử",
+                  location: "Việt Nam"
+                })}
+              >
+                <img
+                  src={resolveImgSrc(currentSlide.secondaryImage)}
+                  alt={currentSlide.secondaryCaption}
+                  loading="eager"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = resolveImgSrc('images/co_do_sao_vang.svg');
+                  }}
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent p-3 flex flex-col justify-end">
+                  <p className="text-[11px] font-semibold text-stone-200">{currentSlide.secondaryCaption}</p>
+                  <span className="text-[9px] text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-0.5">
+                    <ImageIcon className="w-2.5 h-2.5" />
+                    <span>Bấm để xem ảnh</span>
+                  </span>
+                </div>
+              </div>
+
             </div>
 
           </motion.div>
         </AnimatePresence>
 
         {/* Bottom Slide Controls Bar */}
-        <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-6 z-10">
+        <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-6 z-10 w-full">
           <button
             onClick={handleStepBackward}
             disabled={currentSlideIndex === 0 && revealedBulletCount === 1}
