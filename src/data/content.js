@@ -1,5 +1,5 @@
 // Dữ liệu nội dung chuyên đề Tư tưởng Hồ Chí Minh về Độc lập dân tộc
-// Bao gồm 6 luận điểm sáng tạo cốt lõi + Bối cảnh lịch sử + Ý nghĩa thời đại
+// Bao gồm 6 luận điểm sáng tạo + Bối cảnh lịch sử + Tác phẩm kinh điển + Case Studies thảo luận + Flashcards ghi nhớ
 // Tất cả hình ảnh đều là ẢNH THẬT LỊCH SỬ từ các nguồn lưu trữ quốc gia & Wikimedia Commons
 
 export const HISTORICAL_IMAGES = {
@@ -49,10 +49,10 @@ export const HISTORICAL_IMAGES = {
 
 export const OVERVIEW_DATA = {
   title: "Làm rõ sự sáng tạo trong Tư tưởng Hồ Chí Minh về Độc lập Dân tộc",
-  subtitle: "Sự vận dụng và phát triển phát triển đỉnh cao Chủ nghĩa Mác - Lênin vào hoàn cảnh thuộc địa nửa phong kiến Việt Nam",
+  subtitle: "Sự vận dụng và phát triển đỉnh cao Chủ nghĩa Mác - Lênin vào hoàn cảnh thuộc địa nửa phong kiến Việt Nam",
   introduction: `Tư tưởng Hồ Chí Minh về độc lập dân tộc không chỉ là sự tiếp thu truyền thống yêu nước nồng nàn của dân tộc Việt Nam hay tinh hoa văn hóa nhân loại, mà quan trọng nhất, đó là sự **vận dụng và phát triển cực kỳ sáng tạo** chủ nghĩa Mác - Lênin vào điều kiện cụ thể của một nước thuộc địa nửa phong kiến.
 
-Trước khi Hồ Chí Minh tìm ra con đường cứu nước, các phong trào yêu nước Việt Nam từ phong kiến (Cần Vương) đến tư sản (Việt Nam Quốc dân Đảng) đều lần lượt thất bại vì bế tắc về đường lối. Nguyễn Ai Quốc - Hồ Chí Minh đã ra đi tìm đường cứu nước (1911) và bắt gặp Luận điểm của Lênin về vấn đề dân tộc và thuộc địa (1920), từ đó mở ra bước ngoặt lịch sử cho cách mạng Việt Nam.`,
+Trước khi Hồ Chí Minh tìm ra con đường cứu nước, các phong trào yêu nước Việt Nam từ phong kiến (Cần Vương) đến tư sản (Việt Nam Quốc dân Đảng) đều lần lượt thất bại vì bế tắc về đường lối. Nguyễn Ái Quốc - Hồ Chí Minh đã ra đi tìm đường cứu nước (1911) và bắt gặp Luận điểm của Lênin về vấn đề dân tộc và thuộc địa (1920), từ đó mở ra bước ngoặt lịch sử cho cách mạng Việt Nam.`,
   historicalContext: [
     {
       year: "1911",
@@ -203,6 +203,88 @@ export const CREATIVE_POINTS = [
     ],
     image: HISTORICAL_IMAGES.quanDoiGiaiPhong,
     keyTakeaway: "Độc lập dân tộc gắn liền với chủ nghĩa xã hội là bài học vô giá, là đường lối chiến lược đưa Việt Nam từ một nước thuộc địa nghèo nàn trở thành quốc gia phát triển, tự cường."
+  }
+];
+
+// DỮ LIỆU TÁC PHẨM KINH ĐIỂN CỦA BÁC HỒ (Bổ sung cho bài giảng sinh động)
+export const CLASSIC_WORKS = [
+  {
+    year: "1925",
+    title: "Bản án chế độ thực dân Pháp",
+    importance: "Nêu luận điểm 'Con đỉa 2 vòi' & vạch trần tội ác thực dân",
+    summary: "Tác phẩm đập tan tư tưởng thụ động, khẳng định thuộc địa là nguồn sống của chủ nghĩa tư bản và cách mạng thuộc địa có thể nổ ra giành thắng lợi trước."
+  },
+  {
+    year: "1927",
+    title: "Đường Kách Mệnh",
+    importance: "Cuốn sách giáo khoa cách mạng đầu tiên của Việt Nam",
+    summary: "Xác định rõ: Cách mệnh là sự nghiệp của quần chúng; phải có Đảng cách mạng theo chủ nghĩa Mác - Lênin lãnh đạo."
+  },
+  {
+    year: "1930",
+    title: "Chánh cương tắt & Sách lược tắt",
+    importance: "Cương lĩnh chính trị đầu tiên của Đảng",
+    summary: "Đặt giải phóng dân tộc lên hàng đầu: 'Đánh đổ đế quốc chủ nghĩa Pháp và phong kiến, làm cho nước Nam được hoàn toàn độc lập'."
+  },
+  {
+    year: "1945",
+    title: "Tuyên ngôn Độc lập",
+    importance: "Văn bản pháp lý đỉnh cao khai sinh nước Việt Nam mới",
+    summary: "Nâng tầm quyền con người thành quyền dân tộc, khẳng định ý chí sắt đá: 'Nước Việt Nam có quyền hưởng tự do và độc lập'."
+  },
+  {
+    year: "1946",
+    title: "Lời kêu gọi toàn quốc kháng chiến",
+    importance: "Lời hịch sông núi bảo vệ nền độc lập",
+    summary: "'Thà hy sinh tất cả chứ nhất định không chịu mất nước, nhất định không chịu làm nô lệ'."
+  },
+  {
+    year: "1969",
+    title: "Di chúc Chủ tịch Hồ Chí Minh",
+    importance: "Bảo vật quốc gia, lời dặn dò thiêng liêng",
+    summary: "Khẳng định niềm tin tuyệt đối vào thắng lợi giải phóng miền Nam, thống nhất đất nước và xây dựng lại đất nước đàng hoàng hơn, to đẹp hơn."
+  }
+];
+
+// CASE STUDIES THẢO LUẬN SINH VIÊN (Bổ sung cho bài giảng sinh động)
+export const CASE_STUDIES = [
+  {
+    id: 1,
+    title: "Tại sao phong trào Đông Du (Phan Bội Châu) & Duy Tân (Phan Châu Trinh) thất bại?",
+    question: "Phân tích điểm hạn chế trong tư duy của các bậc sĩ phu tiền bối so với cái nhìn vượt thời đại của Nguyễn Ái Quốc.",
+    answer: "Phan Bội Châu nương nhờ Nhật (Đuổi hổ cửa trước rước hùm cửa sau); Phan Châu Trinh xin Pháp cải cách (Xin giặc rủ lòng thương). Hồ Chí Minh nhận ra bản chất của đế quốc và khẳng định: Phải dựa vào sức mạnh đại đoàn kết của chính dân tộc mình và đi theo đường lối cách mạng vô sản."
+  },
+  {
+    id: 2,
+    title: "Vì sao Hồ Chí Minh trích dẫn Tuyên ngôn Độc lập Mỹ (1776) & Pháp (1789)?",
+    question: "Ý nghĩa chiến lược và pháp lý quốc tế trong cách đặt vấn đề của Bác Hồ là gì?",
+    answer: "1. Về pháp lý: Dùng chính lý luận của các nước tư bản lớn để bác bỏ hành động xâm lược của họ ('gậy ông đập lưng ông'). 2. Về triết học: Thừa nhận giá trị tiến bộ của nhân loại nhưng suy rộng thành quyền độc lập của các dân tộc thuộc địa."
+  },
+  {
+    id: 3,
+    title: "Bài học 'Đem sức ta mà tự giải phóng cho ta' vận dụng thế nào trong kỷ nguyên mới?",
+    question: "Liên hệ tinh thần độc lập tự chủ của Tư tưởng Hồ Chí Minh với công cuộc Đổi mới và Hội nhập quốc tế hiện nay.",
+    answer: "Độc lập tự chủ không phải là khép kín hay bế quan tỏa cảng, mà là giữ vững bản lĩnh quốc gia, phát huy nội lực là quyết định, tranh thủ ngoại lực là quan trọng, để đất nước tự cường và phát triển vững chắc."
+  }
+];
+
+// FLASHCARDS GHI NHỚ KIẾN THỨC NHA NHANH
+export const FLASHCARDS = [
+  {
+    front: "Cốt lõi Tư tưởng Hồ Chí Minh về Độc lập Dân tộc?",
+    back: "Độc lập dân tộc gắn liền với Chủ nghĩa xã hội (Độc lập là tiền đề, CNXH là bảo đảm vững chắc)."
+  },
+  {
+    front: "Luận điểm 'Con đỉa hai vòi' có ý nghĩa gì?",
+    back: "Chủ nghĩa tư bản bóc lột ở cả chính quốc và thuộc địa. Thuộc địa có thể nổ ra cách mạng và giành thắng lợi trước!"
+  },
+  {
+    front: "Sự khác biệt về giải quyết vấn đề Dân tộc & Giai cấp?",
+    back: "Châu Âu đặt giải phóng giai cấp lên trước; Hồ Chí Minh xuất phát từ thuộc địa đặt giải phóng Dân tộc lên hàng tối cao!"
+  },
+  {
+    front: "Thước đo giá trị của Độc lập theo Hồ Chí Minh?",
+    back: "'Nước được độc lập mà dân không được hưởng hạnh phúc tự do, thì độc lập cũng chẳng có nghĩa lý gì'."
   }
 ];
 

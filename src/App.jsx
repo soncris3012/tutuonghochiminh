@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import DocumentView from './components/DocumentView';
 import SlideView from './components/SlideView';
+import LectureExtras from './components/LectureExtras';
 import ImageModal from './components/ImageModal';
 import QuizModal from './components/QuizModal';
 import Footer from './components/Footer';
@@ -28,15 +29,16 @@ export default function App() {
       {/* Hero Banner with Quotes and Timeline */}
       <HeroSection
         onStartSlide={() => setActiveMode('slide')}
-        onSelectPoint={(pointId) => {
-          setActiveMode('document');
-        }}
+        onSelectPoint={() => setActiveMode('document')}
       />
 
       {/* Main View Area */}
-      <main className="flex-1">
+      <main className="flex-1 space-y-10">
         {activeMode === 'document' ? (
-          <DocumentView onOpenImage={(img) => setSelectedImage(img)} />
+          <>
+            <DocumentView onOpenImage={(img) => setSelectedImage(img)} />
+            <LectureExtras />
+          </>
         ) : (
           <SlideView onOpenImage={(img) => setSelectedImage(img)} />
         )}
